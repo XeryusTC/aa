@@ -49,6 +49,7 @@ class ArgumentationFramework(object):
             return False
         succ_iter = self._graph.successors_iter(argument.get_name())
         self._graph.remove_node(argument.get_name())
+        self._size = self._size - 1
         for succ in succ_iter:
             self._update(succ)
         return True
