@@ -86,4 +86,11 @@ class ArgumentationFrameworkTest(unittest.TestCase):
         self.fw.add_attack(arg4, arg2)
         self.assertEqual(set(self.fw.get_attacks()),
                 set([(arg5, arg3), (arg3, arg1), (arg1, arg2), (arg4, arg2)]))
+        self.assertEqual(set(self.fw.get_attacks(argument = arg2)),
+                set([(arg1, arg2), (arg4, arg2)]))
+        self.assertEqual(set(self.fw.get_attacks(admissable = True)),
+                set([(arg5, arg3), (arg1, arg2), (arg4, arg2)]))
+        self.assertEqual(set(self.fw.get_attacks(argument = arg2, 
+            admissable = True)),
+                set([(arg1, arg2), (arg4, arg2)]))
 
