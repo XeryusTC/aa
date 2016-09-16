@@ -1,4 +1,5 @@
 import networkx as nx
+import networkx.drawing.nx_pydot as pydot
 
 class ArgumentationFramework(object):
     def __init__(self):
@@ -108,4 +109,14 @@ class ArgumentationFramework(object):
 
     def copy(self):
         pass
+
+    def write_dot(self, path):
+        graph = nx.DiGraph()
+        graph.add_nodes_from([(n, 
+            {'fillcolor': 'green' if att['admissable'] else 'red',
+                'style': 'filled'})
+            for n, att in self._graph.nodes_iter(data = True)])
+        graph.add_edges_from([(u, v, {'arrowhead': 'crowvee'})
+            for u, v, att in self._graph.edges_iter(data = True)])
+        pydot.write_dot(graph, path)
 
