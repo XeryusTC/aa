@@ -86,6 +86,9 @@ class ArgumentationFramework(object):
         else:
             raise KeyError("Argument not in ArgumentationFramework!")
 
+    def get_arguments(self):
+        return [d['argument'] for _, d in self._graph.nodes_iter(data = True)]
+
     def get_admissable(self):
         return [d['argument'] for n, d in self._graph.nodes_iter(data = True)
                                 if self._is_node_admissable(n)]
