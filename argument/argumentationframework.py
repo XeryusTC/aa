@@ -77,6 +77,9 @@ class ArgumentationFramework(object):
     def _is_node_admissable(self, arg_name):
         return self._get_node(arg_name)['admissable']
 
+    def _get_node_argument(self, arg_name):
+        return self._get_node(arg_name)['argument']
+
     def _get_node(self, name):
         if name:
             return self._graph.node[name]
@@ -88,7 +91,12 @@ class ArgumentationFramework(object):
                                 if self._is_node_admissable(n)]
 
     def get_attacks(self, argument = None):
-        pass
+        if argument:
+            return [(self._get_node_argument(p), argument)
+                    for p in self._graph.predecessors_iter(argument.get_name())]
+        else:
+            return [(self._get_node_argument(u), self._get_node_argument(v))
+                    for u, v in self._graph.edges_iter()]
 
     def size(self):
         return self._size
