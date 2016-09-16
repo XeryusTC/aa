@@ -2,6 +2,9 @@ class Argument(object):
     def __init__(self):
         self._name = None
 
+    def __repr__(self):
+        return "#<argument name: " + str(self.get_name()) + ">"
+
     def get_name(self):
         return self._name
 
