@@ -1,6 +1,8 @@
 class Argument(object):
-    def __init__(self):
-        self._name = None
+    def __init__(self, framework, name = None):
+        self._name = name
+        self._fw = framework
+        self._fw.add_argument(self)
 
     def __repr__(self):
         return "#<argument name: " + str(self.get_name()) + ">"
@@ -14,6 +16,12 @@ class Argument(object):
         else:
             self._name = name
         return self._name
+
+    def get_attacks(self, grounded = False):
+        return self._fw.get_attacks(argument = self, grounded = grounded)
+
+    def is_grounded(self):
+        return self._fw.is_grounded(self)
 
     def can_attack(self, other):
         raise NotImplementedError("Implement `can_attack` yourself!")
