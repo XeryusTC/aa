@@ -1,10 +1,14 @@
 from argument import Argument
 
 class Claim(Argument):
-    def __init__(self, framework, room, time, name = None):
+    def __init__(self, framework, agent, room, time, name = None):
         super(Claim, self).__init__(framework, name)
+        self._agent = agent
         self._room = room
         self._time = time
+
+    def get_agent(self):
+        return self._agent
 
     def get_room(self):
         return self._room
