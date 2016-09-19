@@ -114,6 +114,7 @@ class ArgumentationFramework(object):
         graph = nx.DiGraph()
         graph.add_nodes_from([(n, 
             {'fillcolor': 'green' if att['grounded'] else 'red',
+                'shape': 'box',
                 'style': 'filled'})
             for n, att in self._graph.nodes_iter(data = True)])
         graph.add_edges_from([(u, v, {'arrowhead': 'crowvee'})
