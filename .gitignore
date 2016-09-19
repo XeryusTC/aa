@@ -2,6 +2,8 @@
 *.log
 *.synctex.gz
 *.pdf
+*.zip
+*.dot
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
