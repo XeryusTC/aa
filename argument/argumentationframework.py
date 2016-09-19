@@ -18,7 +18,7 @@ class ArgumentationFramework(object):
         self._graph.add_node(
                 argument.get_name(), 
                 argument = argument, 
-                admissable = True)
+                grounded = True)
         self._size = self._size + 1
         return True
 
@@ -32,10 +32,10 @@ class ArgumentationFramework(object):
         return True
 
     def _update(self, arg_name):
-        just = all(map(lambda x: not self._is_node_admissable(x), 
+        just = all(map(lambda x: not self._is_node_grounded(x), 
             self._graph.predecessors_iter(arg_name)))
-        if self._is_node_admissable(arg_name) != just:
-            self._graph.add_node(arg_name, admissable = just)
+        if self._is_node_grounded(arg_name) != just:
+            self._graph.add_node(arg_name, grounded = just)
             for name in self._graph.successors_iter(arg_name):
                 self._update(name)
 
@@ -72,11 +72,11 @@ class ArgumentationFramework(object):
         else:
             return False
 
-    def is_admissable(self, argument):
-        return self._is_node_admissable(argument.get_name())
+    def is_grounded(self, argument):
+        return self._is_node_grounded(argument.get_name())
 
-    def _is_node_admissable(self, arg_name):
-        return self._get_node(arg_name)['admissable']
+    def _is_node_grounded(self, arg_name):
+        return self._get_node(arg_name)['grounded']
 
     def _get_node_argument(self, arg_name):
         return self._get_node(arg_name)['argument']
@@ -90,19 +90,19 @@ class ArgumentationFramework(object):
     def get_arguments(self):
         return [d['argument'] for _, d in self._graph.nodes_iter(data = True)]
 
-    def get_admissable(self):
+    def get_grounded(self):
         return [d['argument'] for n, d in self._graph.nodes_iter(data = True)
-                                if self._is_node_admissable(n)]
+                                if self._is_node_grounded(n)]
 
-    def get_attacks(self, argument = None, admissable = False):
+    def get_attacks(self, argument = None, grounded = False):
         if argument:
             return [(self._get_node_argument(p), argument)
                     for p in self._graph.predecessors_iter(argument.get_name())
-                    if not admissable or self._is_node_admissable(p)]
+                    if not grounded or self._is_node_grounded(p)]
         else:
             return [(self._get_node_argument(u), self._get_node_argument(v))
                     for u, v in self._graph.edges_iter()
-                    if not admissable or self._is_node_admissable(u)]
+                    if not grounded or self._is_node_grounded(u)]
 
     def size(self):
         return self._size
@@ -113,7 +113,7 @@ class ArgumentationFramework(object):
     def write_dot(self, path):
         graph = nx.DiGraph()
         graph.add_nodes_from([(n, 
-            {'fillcolor': 'green' if att['admissable'] else 'red',
+            {'fillcolor': 'green' if att['grounded'] else 'red',
                 'style': 'filled'})
             for n, att in self._graph.nodes_iter(data = True)])
         graph.add_edges_from([(u, v, {'arrowhead': 'crowvee'})
