@@ -1,0 +1,81 @@
+\documentclass[a4paper]{article}
+\usepackage{latexsym}
+\usepackage[a4paper]{geometry}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[pdftex]{graphicx}
+\usepackage{subfigure}
+\usepackage{natbib}
+
+\definecolor{White}{rgb}{1,1,1}
+\definecolor{Blue}{rgb}{0,0,0.5}
+\definecolor{Green}{rgb}{0,0.75,0.0}
+\definecolor{LightGray}{rgb}{0.6,0.6,0.6}
+\definecolor{DarkGray}{rgb}{0.3,0.3,0.3}
+\lstset{language=Python,
+   keywords={function,uint8,uint16,uint32,double,break,case,catch,continue,else,elseif,end,for,global,if,otherwise,persistent,return,switch,try,while},
+   basicstyle=\ttfamily\small,
+   breaklines=true,
+   keywordstyle=\bfseries\color{Blue},
+   commentstyle=\itshape\color{LightGray},
+   stringstyle=\color{Green},
+   numbers=left,
+   numberstyle=\tiny\color{DarkGray},
+   stepnumber=1,
+   numbersep=10pt,
+   backgroundcolor=\color{White},
+   tabsize=2,
+   showspaces=false,
+   showstringspaces=false,
+   captionpos=b}
+
+%Boldface text for type writer font
+\usepackage{bold-extra} %\DeclareFontShape{OT1}{cmtt}{bx}{n}{<5><6><7><8><9><10><10.95><12><14.4><17.28><20.74><24.88>cmttb10}{}
+
+%Break words properly at the end of a line (which isn't sloppy...)
+\sloppy
+
+%Use command \exercise for each exercise
+\newcounter{exerciseCount}
+\setcounter{exerciseCount}{0}
+\newcommand{\exercise}[1]{\addtocounter{exerciseCount}{1} \noindent \medskip {\large \textsf{\textbf{Exercise \arabic{exerciseCount} \--- #1}}} \par}
+\renewcommand{\theenumi}{\textsf{\textbf{\alph{enumi}}}}
+
+%Use command \code for code snippets
+\newcommand{\code}[1]{\textnormal{\texttt{#1}}}
+
+
+\title{\textsf{Arguing Agents :} Project Report}
+\author{Pim van der Meulen \\Ren\'e Mellema \\Xeryus Stokkel}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+%Section 1: Introduction
+\input{introduction.tex}
+
+%Section 2: Model
+\input{model.tex}
+
+%Section 3: Experiments
+\input{experiments.tex}
+
+%Section 4: Results
+\input{results.tex}
+
+%Section 5: Discussion
+\input{discussion.tex}
+
+%Section 6: Future Work
+\input{futureWork.tex}
+
+\bibliographystyle{plainnat}
+\bibliography{literature}
+\end{document}
+
+
+
+
+
+
