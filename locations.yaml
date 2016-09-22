@@ -1,0 +1,11 @@
+rooms:
+    - room: 101
+      size: 60
+    - room: 102
+      size: 30
+
+times:
+    - start: '09:00:00'
+      end: '11:00:00'
+    - start: '11:00:00'
+      end: '13:00:00'

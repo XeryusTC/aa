@@ -1,0 +1,4 @@
+decorator==4.0.10
+networkx==1.11
+pydotplus==2.0.2
+pyparsing==2.1.9
