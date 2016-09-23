@@ -1,15 +1,15 @@
 import yaml
 class Agent(object):
     def __init__(self, name, course, students):
-        self.name = name
+        self._name = name
         self.course = course
         self.students = students
 
     def __str__(self):
-        return '{} | course: {} | students:{}'.format(self.name, self.course, self.students)
+        return '{} | course: {} | students:{}'.format(self._name, self.course, self.students)
     
     def get_name(self):
-        return self.name
+        return self._name
 		
     def get_course(self):
         return self.course

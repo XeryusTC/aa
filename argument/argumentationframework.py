@@ -157,6 +157,4 @@ class ArgumentationFramework(object):
         graph.add_edges_from([(u, v, {'arrowhead': 'crowvee'})
             for u, v, att in self._graph.edges_iter(data = True)])
         pydot.write_dot(graph, path)
-
-    def execute_round(self, agent_list):
-        
+  
