@@ -5,7 +5,7 @@ rooms:
       size: 30
 
 times:
-    - start: '09:00:00'
-      end: '11:00:00'
-    - start: '11:00:00'
-      end: '13:00:00'
+    - start: 9
+      end: 11
+    - start: 11
+      end: 13
