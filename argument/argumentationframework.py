@@ -6,6 +6,7 @@ class ArgumentationFramework(object):
         self._last_argument_count = 0
         self._size = 0
         self._graph = nx.DiGraph()
+        self._cycles = 0
 
     def add_argument(self, argument):
         try:
@@ -28,8 +29,16 @@ class ArgumentationFramework(object):
         if not self.has_argument(arg1):
             self.add_argument(arg1)
         self._graph.add_edge(arg1.get_name(), arg2.get_name())
-        self._update(arg2.get_name())
+        if self._detect_cycles():
+            self._recalculate_grounded()
+        else:
+            self._update(arg2.get_name())
         return True
+
+    def _detect_cycles(self):
+        oldC = self._cycles
+        self._cycles = len(list(nx.simple_cycles(self._graph)))
+        return oldC != self._cycles
 
     def _update(self, arg_name):
         just = all(map(lambda x: not self._is_node_grounded(x), 
@@ -38,6 +47,34 @@ class ArgumentationFramework(object):
             self._graph.add_node(arg_name, grounded = just)
             for name in self._graph.successors_iter(arg_name):
                 self._update(name)
+
+    def _recalculate_grounded(self):
+        calulated = []
+        for arg in self.get_arguments():
+            if len(self.get_attacks(arg)) == 0:
+                self._graph.add_node(arg.get_name(), grounded = True)
+                calulated.append(arg.get_name())
+            else:
+                self._graph.add_node(arg.get_name(), grounded = None)
+        new_args = calulated
+        while len(new_args) != 0:
+            calulated = new_args
+            new_args = []
+            for arg in calulated:
+                if self._is_node_grounded(arg):
+                    for arg_name in self._graph.successors_iter(arg):
+                        self._graph.add_node(arg_name, grounded = False)
+                        new_args.append(arg_name)
+                else:
+                    for arg_name in self._graph.successors_iter(arg):
+                        ground_att = [self._is_node_grounded(att)
+                                        for att in self._graph.predecessors_iter(arg_name)]
+                        if all([att != None for att in ground_att]):
+                            # All the predeccessors are calculated
+                            just = not any(ground_att)
+                            self._graph.add_node(arg_name, grounded = just)
+                            new_args.append(arg_name)
+
 
     def add_undercut(self, arg1, arg2):
         pass

@@ -65,6 +65,18 @@ class ArgumentationFrameworkTest(unittest.TestCase):
         self.assertGrounded(arg3)
         self.assertGrounded(arg4)
 
+    def test_cycles(self):
+        arg1 = Argument(self.fw)
+        arg2 = Argument(self.fw)
+        self.assertGrounded(arg1)
+        self.assertGrounded(arg2)
+        self.fw.add_attack(arg1, arg2)
+        self.assertGrounded(arg1)
+        self.assertNotGrounded(arg2)
+        self.fw.add_attack(arg2, arg1)
+        self.assertNotGrounded(arg1)
+        self.assertNotGrounded(arg2)
+
     def test_get_attacks(self):
         arg1 = Argument(self.fw)
         arg2 = Argument(self.fw)
