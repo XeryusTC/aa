@@ -1,4 +1,7 @@
 decorator==4.0.10
 networkx==1.11
+pyaml==16.9.0
 pydotplus==2.0.2
 pyparsing==2.1.9
+PyYAML==3.12
+wheel==0.26.0
