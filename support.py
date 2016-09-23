@@ -13,7 +13,6 @@ print('')
 for room in rooms:
     print(room)
 
-fw = ArgumentationFramework()
 
 
  
