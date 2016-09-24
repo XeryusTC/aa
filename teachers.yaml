@@ -1,10 +1,10 @@
 teachers:
-    - name: 'Arnold Meijster'
-      course: 'Imperatief Programmeren'
+    - name: "Arnold Meijster"
+      course: "Imperatief Programmeren"
       students: 59
-    - name: 'Rinike Verbrugge'
-      course: 'Multi Agent Systems'
+    - name: "Rineke Verbrugge"
+      course: "Multi Agent Systems"
       students: 48
-    - name: 'Bart Verheij'
-      course: 'Arguing Agents'
+    - name: "Bart Verheij"
+      course: "Arguing Agents"
       students: 29

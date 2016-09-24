@@ -20,8 +20,8 @@ class SizeArgumentTest(unittest.TestCase):
         self.assertFalse(s1.can_attack(s5))
 
     def test_can_attack_claim(self):
-        c1 = Claim(self._fw, Agent("Bart"), 1, "11:00 - 13:00")
-        c2 = Claim(self._fw, Agent("Bart"), 2, "11:00 - 13:00")
+        c1 = Claim(self._fw, Agent("Bart", "Arguing Agents", 29), 1, "11:00 - 13:00")
+        c2 = Claim(self._fw, Agent("Bart", "Arguing Agents", 29), 2, "11:00 - 13:00")
         s = SizeArgument(self._fw, 300, 1)
         self.assertTrue(s.can_attack(c1))
         self.assertFalse(s.can_attack(c2))
