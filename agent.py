@@ -5,8 +5,13 @@ class Agent(object):
         #self.course = course
         #self.students = students
 
+<<<<<<< Updated upstream
     #def __str__(self):
     #   return '{} | course: {} | students:{}'.format(self._name, self.course, self.students)
+=======
+    def __str__(self):
+       return '{} | course: {} | students:{}'.format(self.name, self.course, self.students)
+>>>>>>> Stashed changes
     
     def get_name(self):
         return self._name

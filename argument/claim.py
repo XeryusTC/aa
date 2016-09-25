@@ -2,7 +2,7 @@ from argument import Argument
 
 class Claim(Argument):
     def __init__(self, framework, agent, room, time, name = None):
-        super(Claim, self).__init__(framework, name)
+        super(Claim, self).__init__(framework, agent, room)
         self._agent = agent
         self._room = room
         self._time = time
@@ -15,7 +15,7 @@ class Claim(Argument):
 
     def get_time(self):
         return self._time
-
+    
     def can_attack(self, other):
         return (isinstance(other, Claim) and 
                 self.get_room() == other.get_room() and

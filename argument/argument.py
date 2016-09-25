@@ -1,7 +1,9 @@
 class Argument(object):
-    def __init__(self, framework, name = None):
+    def __init__(self, framework, owner, room, name = None):
         self._name = name
         self._fw = framework
+        self.owner = owner
+        self.room = room
         self._fw.add_argument(self)
 
     def __repr__(self):
@@ -9,6 +11,12 @@ class Argument(object):
 
     def get_name(self):
         return self._name
+        
+    def get_owner(self):
+        return self.owner
+    
+    def get_room(self):
+        return self.room
 
     def set_name(self, name):
         if self._name is not None:
