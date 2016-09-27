@@ -1,3 +1,5 @@
+import random
+
 import rooms
 import agent
 from argument import *
@@ -11,8 +13,8 @@ class Support:
 def debateRoom(targetRoom, agents):
     interestedAgents = []
     claims = []
-    fw = ArgumentationFramework() 
- 
+    fw = ArgumentationFramework()
+
     #Check if agent can make a claim, and if it can, make it.
     for agent in agents:
         if viableClaim(agent, targetRoom):
@@ -20,10 +22,10 @@ def debateRoom(targetRoom, agents):
             c = Claim(fw, agent, targetRoom, targetRoom.start_time)
             claims.append(c)
     print(claims)
-    
+
     while True:
         for agent in interestedAgents:
-            counter = agent.makeCounter(fw)
+            counter = agent.make_counter(fw)
             if counter:
                 fw.add_attack(counter.get_attacking(), counter.get_attacked())
             else:
@@ -55,7 +57,7 @@ if __name__ == '__main__':
 
     for teacher in teachers:
         print(teacher)
-    
+
     print('')
 
     for room in rooms:
