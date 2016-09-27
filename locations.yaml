@@ -1,11 +1,19 @@
 rooms:
-    - room: 101
-      size: 60
-    - room: 102
-      size: 30
+    - room: 289
+      size: 40
+    - room: 151
+      size: 294
+    - room: 253
+      size: 120
+    - room: 222
+      size: 36
 
 times:
     - start: 9
       end: 11
     - start: 11
       end: 13
+    - start: 13
+      end: 15
+    - start: 15
+      end: 17   

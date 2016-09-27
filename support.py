@@ -11,33 +11,28 @@ class Support:
 def debateRoom(targetRoom, agents, settledAgents):
     interestedAgents = []
     claims = []
-    arguments = []
+    fw = ArgumentationFramework() 
  
     #Check if agent can make a claim, and if it can, make it.
     for agent in agents:
         if viableClaim(agent, targetRoom, settledAgents):
             interestedAgents.append(agent)
-            c = Claim(fw, agent, targetRoom, targetRoom.get_start_time)
+            c = Claim(fw, agent, targetRoom, targetRoom.start_time)
             claims.append(c)
     print(claims)
-
-    #Make an argument why you should have the room (only makes a size argument for now)
-    for agent in interestedAgents:
-        a = SizeArgument(fw, agent, targetRoom, agent.get_students)
-        arguments.append(a)
-    print(arguments)
-
-    #Make counter arguments 
-    for agent in interestedAgents:
-        for argument in arguments:
-            if argument.get_owner == agent:
-                print('Im breaking')
-                break
+    
+    while True:
+        for agent in interestedAgents:
+            counter = agent.makeCounter(fw)
+            if counter:
+                fw.add_attack(counter.get_attacking(), counter.get_attacked())
             else:
-                print('Im not breaking')   
-
-    print('done with debate for this room')
-
+                interestedAgents.remove(agent)
+        winning = [claim for claim in claims if fw.is_grounded(claim)]
+        winner = random.choice(winning)
+        break
+    return winner
+    
 #Check if the room is a good option for the agent (only checks if room is big enough and agent doesn't have a room yet for now)
 def viableClaim(targetAgent, targetRoom, settledAgents):
     viableOption = False
@@ -53,7 +48,7 @@ if __name__ == '__main__':
 
     for teacher in teachers:
         print(teacher)
-	
+    
     print('')
 
     for room in rooms:
@@ -69,4 +64,4 @@ if __name__ == '__main__':
 
  
 
-	
+    

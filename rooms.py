@@ -15,10 +15,7 @@ class Room:
 
     def get_size(self):
         return self.size
-                
-    def get_start_time(self):
-        return self.start_time
-    
+                   
 def load_rooms(filename):
     with open(filename, 'r') as f:
         room_doc = yaml.load(f)

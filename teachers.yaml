@@ -1,10 +1,28 @@
 teachers:
     - name: 'Arnold Meijster'
-      course: 'Imperatief Programmeren'
-      students: 59
+      courses: 
+      - name: 'Imperatief Programmeren'
+        students: 180
+        lectures: 2 
+      - name: 'Functional Programming'
+        students: 99
+        lectures: 2 
+      - name: 'Signals and Systems'
+        students: 81
+        lectures: 2 
     - name: 'Rinike Verbrugge'
-      course: 'Multi Agent Systems'
-      students: 48
+      courses:
+      - name: 'Multi Agent Systems'
+        students: 50
+        lectures: 2 
+      - name: 'Introduction to Logic'
+        students: 105
+        lectures: 2 
     - name: 'Bart Verheij'
-      course: 'Arguing Agents'
-      students: 29
+      courses: 
+      - name: 'Arguing Agents'
+        students: 34
+        lectures: 2 
+      - name: 'Knowledge and Agent Technology'
+        students: 96
+        lectures: 1

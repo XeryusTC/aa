@@ -3,8 +3,7 @@ from argument.claim import Claim
 
 class SizeArgument(Argument):
     def __init__(self, framework, owner, room, size, name = None):
-        super(SizeArgument, self).__init__(framework, owner, room, name)
-        self.owner = owner
+        super(SizeArgument, self).__init__(framework, owner, name)
         self._room = room
         self._size = size
 
@@ -13,9 +12,6 @@ class SizeArgument(Argument):
 
     def get_room(self):
         return self._room
-
-    def get_owner(self):
-        return self.owner
 
     def can_attack(self, other):
         if isinstance(other, SizeArgument):
