@@ -4,7 +4,7 @@ from argument.argumentationframework import ArgumentationFramework
 
 class ArgumentTestCase(unittest.TestCase):
     def setUp(self):
-        self.arg = Argument(ArgumentationFramework())
+        self.arg = Argument(ArgumentationFramework(), "test")
 
     def test_name_setting(self):
         self.assertEqual(self.arg.get_name(), 1, "New name should be set")
@@ -12,7 +12,7 @@ class ArgumentTestCase(unittest.TestCase):
             self.arg.set_name("hello")
 
     def test_abstract(self):
-        other = Argument(ArgumentationFramework())
+        other = Argument(ArgumentationFramework(), "test")
         with self.assertRaises(NotImplementedError):
             self.arg.can_undercut(other)
         with self.assertRaises(NotImplementedError):
