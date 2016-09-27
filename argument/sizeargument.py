@@ -2,10 +2,10 @@ from argument import Argument
 from argument.claim import Claim
 
 class SizeArgument(Argument):
-    def __init__(self, framework, size, room, name = None):
-        super(SizeArgument, self).__init__(framework, name)
-        self._size = size
+    def __init__(self, framework, owner, room, size, name = None):
+        super(SizeArgument, self).__init__(framework, owner, name)
         self._room = room
+        self._size = size
 
     def get_size(self):
         return self._size

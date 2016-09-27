@@ -1,7 +1,8 @@
 class Argument(object):
-    def __init__(self, framework, name = None):
+    def __init__(self, framework, owner, name = None):
         self._name = name
         self._fw = framework
+        self._owner = owner
         self._fw.add_argument(self)
 
     def __repr__(self):
@@ -9,7 +10,10 @@ class Argument(object):
 
     def get_name(self):
         return self._name
-
+        
+    def get_owner(self):
+        return self._owner
+    
     def set_name(self, name):
         if self._name is not None:
             raise RenameError("You can't rename an argument")

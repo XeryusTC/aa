@@ -17,8 +17,8 @@ class ArgumentationFramework(object):
         if self._graph.has_node(argument.get_name()):
             return False
         self._graph.add_node(
-                argument.get_name(), 
-                argument = argument, 
+                argument.get_name(),
+                argument = argument,
                 grounded = True)
         self._size = self._size + 1
         return True
@@ -41,7 +41,7 @@ class ArgumentationFramework(object):
         return oldC != self._cycles
 
     def _update(self, arg_name):
-        just = all(map(lambda x: not self._is_node_grounded(x), 
+        just = all(map(lambda x: not self._is_node_grounded(x),
             self._graph.predecessors_iter(arg_name)))
         if self._is_node_grounded(arg_name) != just:
             self._graph.add_node(arg_name, grounded = just)
@@ -149,7 +149,7 @@ class ArgumentationFramework(object):
 
     def write_dot(self, path):
         graph = nx.DiGraph()
-        graph.add_nodes_from([(n, 
+        graph.add_nodes_from([(n,
             {'fillcolor': 'green' if att['grounded'] else 'red',
                 'shape': 'box',
                 'style': 'filled'})
@@ -157,4 +157,3 @@ class ArgumentationFramework(object):
         graph.add_edges_from([(u, v, {'arrowhead': 'crowvee'})
             for u, v, att in self._graph.edges_iter(data = True)])
         pydot.write_dot(graph, path)
-

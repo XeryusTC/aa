@@ -13,7 +13,9 @@ class Room:
         return '{} (seats {}) {:0>2}:00:00-{:0>2}:00:00'.format(
                 self.name, self.size, self.start_time, self.end_time)
 
-
+    def get_size(self):
+        return self.size
+                   
 def load_rooms(filename):
     with open(filename, 'r') as f:
         room_doc = yaml.load(f)
