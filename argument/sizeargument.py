@@ -21,4 +21,3 @@ class SizeArgument(Argument):
             return self.get_room() == other.get_room()
         else:
             return False
-
