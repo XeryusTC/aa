@@ -6,16 +6,16 @@ from argument.sizeargument import SizeArgument
 
 class Support:
     def __init__(self):
-        bullshit = []    
-        
-def debateRoom(targetRoom, agents, settledAgents):
+        bullshit = []
+
+def debateRoom(targetRoom, agents):
     interestedAgents = []
     claims = []
     fw = ArgumentationFramework() 
  
     #Check if agent can make a claim, and if it can, make it.
     for agent in agents:
-        if viableClaim(agent, targetRoom, settledAgents):
+        if viableClaim(agent, targetRoom):
             interestedAgents.append(agent)
             c = Claim(fw, agent, targetRoom, targetRoom.start_time)
             claims.append(c)
@@ -31,16 +31,23 @@ def debateRoom(targetRoom, agents, settledAgents):
         winning = [claim for claim in claims if fw.is_grounded(claim)]
         winner = random.choice(winning)
         break
+
+    # Reset agents course claiming state
+    for agent in agents:
+        agent.active_course = None
+
     return winner
-    
+
 #Check if the room is a good option for the agent (only checks if room is big enough and agent doesn't have a room yet for now)
-def viableClaim(targetAgent, targetRoom, settledAgents):
-    viableOption = False
-    
-    if (targetRoom.size >= targetAgent.students and ((targetAgent in settledAgents) == False)):
-        viableOption = True
-    print(viableOption)
-    return viableOption
+def viableClaim(agent, room):
+    class_size = 0
+    for course in agent.courses:
+        if course.lectures > 0 \
+                and room.size >= course.students \
+                and course.students > class_size:
+            agent.active_course = course
+            class_size = course.students
+    return class_size != 0
 
 if __name__ == '__main__':
     rooms = rooms.load_rooms('locations.yaml')
@@ -54,14 +61,6 @@ if __name__ == '__main__':
     for room in rooms:
         print(room)
 
-    fw = ArgumentationFramework() 
-    settledAgents = []
-    
     for room in rooms:
         print(room)
-        debateRoom(room, teachers, settledAgents)
-
-
- 
-
-    
+        debateRoom(room, teachers)
