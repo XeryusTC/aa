@@ -6,6 +6,7 @@ class Agent(object):
     def __init__(self, name, courses = []):
         self.name = name
         self.courses = courses
+        self.active_course = None
 
     def __str__(self):
        return '#<{} | course: {} >'.format(self.name, self.courses)

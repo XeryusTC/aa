@@ -1,4 +1,6 @@
 import random
+from ics import Calendar, Event
+from datetime import datetime
 
 import rooms
 import agent
@@ -21,6 +23,7 @@ def debateRoom(targetRoom, agents):
             interestedAgents.append(agent)
             c = Claim(fw, agent, targetRoom, targetRoom.start_time)
             claims.append(c)
+
     print("===Claims===")
     print(claims)
     for claim1 in claims:
@@ -36,15 +39,20 @@ def debateRoom(targetRoom, agents):
             if counter:
                 fw.add_attack(counter.attacker, counter.attackee)
         winning = [claim for claim in claims if fw.is_grounded(claim)]
-        print(winning)
-        winner = random.choice(winning)
         break
+
+    if winning:
+        winner = random.choice(winning) # TODO: some better method of picking winner
+        course = winner.owner.active_course
+        course.lectures -= 1
+    else:
+        course = None
 
     # Reset agents course claiming state
     for agent in agents:
         agent.active_course = None
 
-    return winner
+    return course
 
 #Check if the room is a good option for the agent (only checks if room is big enough and agent doesn't have a room yet for now)
 def viableClaim(agent, room):
@@ -67,6 +75,25 @@ if __name__ == '__main__':
 
     print('')
 
+    schedule = []
     for room in rooms:
-        print(room)
-        debateRoom(room, teachers)
+        print("Debating room:", room)
+        course = debateRoom(room, teachers)
+        print("Winning course:", course)
+        if course:
+            schedule.append({'room': room, 'course': course})
+
+    # Write the schedule
+    cal = Calendar()
+    today = datetime.today().strftime('%Y-%m-%d')
+    for slot in schedule:
+        e = Event()
+        e.name = "{room} {course_name}".format(room=slot['room'].name,
+                course_name=slot['course'].name)
+        print("{}T{:0>2}:00:00".format(today, slot['room'].start_time))
+        e.begin = "{}T{:0>2}:00:00".format(today, slot['room'].start_time)
+        e.end   = "{}T{:0>2}:00:00".format(today, slot['room'].end_time)
+        cal.events.append(e)
+
+    with open('schedule.ics', 'w') as f:
+        f.writelines(cal)
