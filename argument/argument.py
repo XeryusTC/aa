@@ -6,7 +6,8 @@ class Argument(object):
         self._fw.add_argument(self)
 
     def __repr__(self):
-        return "#<argument name: " + str(self.get_name()) + ">"
+        return "#<argument name: " + str(self.get_name()) + \
+            " | owner: "+ str(self.owner.name) +">"
 
     def get_name(self):
         return self._name
@@ -32,6 +33,17 @@ class Argument(object):
 
     def can_support(self, other):
         raise NotImplementedError("Implement `can_support` yourself!")
+
+class Counter(object):
+    def __init__(self, type, attacker, attackee):
+        self.type = type
+        self.attacker = attacker
+        self.attackee = attackee
+
+    def __str__(self):
+        return "#<counter type: " + self.type + \
+                " | attacker: " + str(self.attacker) + \
+                " | attackee: " + str(self.attackee) + ">"
 
 class RenameError(Exception):
     pass
