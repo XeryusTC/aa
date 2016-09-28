@@ -21,16 +21,22 @@ def debateRoom(targetRoom, agents):
             interestedAgents.append(agent)
             c = Claim(fw, agent, targetRoom, targetRoom.start_time)
             claims.append(c)
+    print("===Claims===")
     print(claims)
+    for claim1 in claims:
+        for claim2 in claims:
+            if claim1 != claim2:
+                fw.add_attack(claim1, claim2)
 
     while True:
         for agent in interestedAgents:
-            counter = agent.make_counter(fw)
+            print("Agent: " + str(agent))
+            counter = agent.make_counter(fw, targetRoom)
+            print("Counter: " + str(counter))
             if counter:
-                fw.add_attack(counter.get_attacking(), counter.get_attacked())
-            else:
-                interestedAgents.remove(agent)
+                fw.add_attack(counter.attacker, counter.attackee)
         winning = [claim for claim in claims if fw.is_grounded(claim)]
+        print(winning)
         winner = random.choice(winning)
         break
 
@@ -55,13 +61,11 @@ if __name__ == '__main__':
     rooms = rooms.load_rooms('locations.yaml')
     teachers = agent.load_agents('teachers.yaml')
 
+    print("===Teachers===")
     for teacher in teachers:
         print(teacher)
 
     print('')
-
-    for room in rooms:
-        print(room)
 
     for room in rooms:
         print(room)
