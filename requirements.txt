@@ -1,7 +1,10 @@
+arrow==0.4.2
 decorator==4.0.10
+ics==0.3.1
 networkx==1.11
 pyaml==16.9.0
 pydotplus==2.0.2
 pyparsing==2.1.9
+python-dateutil==2.5.3
 PyYAML==3.12
-wheel==0.26.0
+six==1.10.0
