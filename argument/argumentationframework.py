@@ -23,17 +23,31 @@ class ArgumentationFramework(object):
         self._size = self._size + 1
         return True
 
-    def add_attack(self, arg1, arg2):
+    def add_attack(self, arg1, arg2, weight = 1):
         if not self.has_argument(arg2):
             raise ValueError("Attacked argument not in the framework!")
         if not self.has_argument(arg1):
             self.add_argument(arg1)
-        self._graph.add_edge(arg1.get_name(), arg2.get_name())
+        self._add_edge(arg1.get_name(), arg2.get_name(), "attack", weight)
         if self._detect_cycles():
             self._recalculate_grounded()
         else:
             self._update(arg2.get_name())
         return True
+
+    def _add_edge(self, name1, name2, type, weight):
+        innum = self._last_argument_count + 1
+        self._last_argument_count = innum
+        self._graph.add_edge(name1, innum, type = "inner")
+        self._graph.add_edge(innum, name2, type = type, weight = weight)
+
+    def _get_inner_node(self, name1, name2):
+        inner = [succ for succ in self._graph.successors(name1)
+                    if name2 in self._graph.successors(succ)]
+        if len(inner) == 0:
+            return None
+        else:
+            return inner[0]
 
     def _detect_cycles(self):
         oldC = self._cycles
@@ -41,6 +55,7 @@ class ArgumentationFramework(object):
         return oldC != self._cycles
 
     def _update(self, arg_name):
+        inners = self._graph.predeccessors(arg_name)
         just = all(map(lambda x: not self._is_node_grounded(x),
             self._graph.predecessors_iter(arg_name)))
         if self._is_node_grounded(arg_name) != just:
@@ -93,8 +108,15 @@ class ArgumentationFramework(object):
         return True
 
     def remove_attack(self, arg1, arg2):
-        self._graph.remove_edge(arg1.get_name(), arg2.get_name())
-        self._update(arg2.get_name())
+        inner = self._get_inner_node(arg1.get_name(), arg2.get_name())
+        if not inner:
+            return True # attack is not in framework
+        for_removal = [succ for succ in self._graph.predeccessors(inner)
+                        if self._graph[inner][succ]['type'] != "inner"]
+        self._graph.remove_node(inner)
+        for rem in for_removal:
+            self._graph.remove_node(rem)
+        return True
 
     def remove_undercut(self, argument):
         pass
@@ -125,7 +147,8 @@ class ArgumentationFramework(object):
             raise KeyError("Argument not in ArgumentationFramework!")
 
     def get_arguments(self):
-        return [d['argument'] for _, d in self._graph.nodes_iter(data = True)]
+        return [d['argument'] for _, d in self._graph.nodes_iter(data = True)
+                if 'argument' in d]
 
     def get_grounded(self):
         return [d['argument'] for n, d in self._graph.nodes_iter(data = True)
@@ -134,7 +157,10 @@ class ArgumentationFramework(object):
     def get_attacks(self, argument = None, grounded = False):
         if argument:
             return [(self._get_node_argument(p), argument)
-                    for p in self._graph.predecessors_iter(argument.get_name())
+                    for att, _, d in self._graph.in_edges(argument.get_name(), data = True)
+                    if not d['type'] == "inner"
+                    for p, _, d2 in self._graph.in_edges(att, data = True)
+                    if d2['type'] == "inner"
                     if not grounded or self._is_node_grounded(p)]
         else:
             return [(self._get_node_argument(u), self._get_node_argument(v))
