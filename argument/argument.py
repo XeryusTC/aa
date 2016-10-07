@@ -6,8 +6,12 @@ class Argument(object):
         self._fw.add_argument(self)
 
     def __repr__(self):
-        return "#<argument name: " + str(self.get_name()) + \
-            " | owner: "+ str(self.owner.name) +">"
+        try:
+            return "#<argument name: " + str(self.get_name()) + \
+                " | owner: "+ str(self.owner.name) +">"
+        except: 
+            return "#<argument name: " + str(self.get_name()) + \
+                " | owner: "+ str(self.owner) +">"
 
     def get_name(self):
         return self._name
