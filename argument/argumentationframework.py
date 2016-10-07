@@ -207,12 +207,23 @@ class ArgumentationFramework(object):
         pass
 
     def write_dot(self, path):
+        def node_to_style(node):
+            if node == {}:
+                return {'style': 'filled', 'shape': 'point', 'width': 0.01}
+            else:
+                return {'fillcolor': 'green' if node['grounded'] else 'red',
+                         'shape': 'box',
+                         'style': 'filled'}
+        def edge_to_style(node):
+            if node['type'] == 'inner':
+                return {'arrowhead': 'none'}
+            elif node['weight'] > 0:
+                return {'arrowhead': 'normal'}
+            else:
+                return {'arrowhead': 'diamond'}
         graph = nx.DiGraph()
-        graph.add_nodes_from([(n,
-            {'fillcolor': 'green' if att['grounded'] else 'red',
-                'shape': 'box',
-                'style': 'filled'})
+        graph.add_nodes_from([(n, node_to_style(att))
             for n, att in self._graph.nodes_iter(data = True)])
-        graph.add_edges_from([(u, v, {'arrowhead': 'crowvee'})
+        graph.add_edges_from([(u, v, edge_to_style(att))
             for u, v, att in self._graph.edges_iter(data = True)])
         pydot.write_dot(graph, path)
