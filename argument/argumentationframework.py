@@ -1,3 +1,4 @@
+from argument.argument import RenameError
 import networkx as nx
 import networkx.drawing.nx_pydot as pydot
 
@@ -8,40 +9,15 @@ class ArgumentationFramework(object):
         self._graph = nx.DiGraph()
         self._cycles = 0
 
-    def add_argument(self, argument):
+    def _get_inner_node(self, arg1, arg2):
         try:
-            argument.set_name(self._last_argument_count + 1)
-            self._last_argument_count = self._last_argument_count + 1
-        except RenameError:
-            pass
-        if self._graph.has_node(argument.get_name()):
-            return False
-        self._graph.add_node(
-                argument.get_name(),
-                argument = argument,
-                grounded = True)
-        self._size = self._size + 1
-        return True
-
-    def add_attack(self, arg1, arg2, weight = 1):
-        if not self.has_argument(arg2):
-            raise ValueError("Attacked argument not in the framework!")
-        if not self.has_argument(arg1):
-            self.add_argument(arg1)
-        self._add_edge(arg1.get_name(), arg2.get_name(), "attack", -weight)
-        if self._detect_cycles():
-            self._recalculate_grounded()
-        else:
-            self._update(arg2.get_name())
-        return True
-
-    def _add_edge(self, name1, name2, type, weight):
-        innum = self._last_argument_count + 1
-        self._last_argument_count = innum
-        self._graph.add_edge(name1, innum, type = "inner")
-        self._graph.add_edge(innum, name2, type = type, weight = weight)
-
-    def _get_inner_node(self, name1, name2):
+            name1 = arg1.get_name()
+        except:
+            name1 = arg1
+        try:
+            name2 = arg2.get_name()
+        except:
+            name2 = arg2
         inner = [succ for succ in self._graph.successors(name1)
                     if name2 in self._graph.successors(succ)]
         if len(inner) == 0:
@@ -73,6 +49,12 @@ class ArgumentationFramework(object):
                 for arg in self._graph.successors_iter(inn):
                     self._update(arg)
 
+    def _add_edge(self, name1, name2, type, weight):
+        innum = self._last_argument_count + 1
+        self._last_argument_count = innum
+        self._graph.add_edge(name1, innum, type = "inner")
+        self._graph.add_edge(innum, name2, type = type, weight = weight)
+
     def _recalculate_grounded(self):
         calulated = []
         for arg in self.get_arguments():
@@ -103,6 +85,32 @@ class ArgumentationFramework(object):
                                 self._graph.add_node(arg_name, grounded = just)
                                 new_args.append(arg_name)
 
+    def add_argument(self, argument):
+        try:
+            argument.set_name(self._last_argument_count + 1)
+            self._last_argument_count = self._last_argument_count + 1
+        except RenameError:
+            pass
+        if self._graph.has_node(argument.get_name()):
+            return False
+        self._graph.add_node(
+                argument.get_name(),
+                argument = argument,
+                grounded = True)
+        self._size = self._size + 1
+        return True
+
+    def add_attack(self, arg1, arg2, weight = 1):
+        if not self.has_argument(arg2):
+            raise ValueError("Attacked argument not in the framework!")
+        if not self.has_argument(arg1):
+            self.add_argument(arg1)
+        self._add_edge(arg1.get_name(), arg2.get_name(), "attack", -weight)
+        if self._detect_cycles():
+            self._recalculate_grounded()
+        else:
+            self._update(arg2.get_name())
+        return True
 
     def add_undercut(self, arg1, arg2):
         pass
@@ -155,6 +163,16 @@ class ArgumentationFramework(object):
         return self._is_node_grounded(argument.get_name())
 
     def is_undercut(self, arg1, arg2):
+        inn = self._get_inner_node(arg1.get_name(), arg2.get_name())
+        if inn:
+            undercutters = [und 
+                            for und, _, d in self._graph.in_edges(inn, data = True)
+                            if d['type'] != 'inner' and self._is_node_grounded(und)]
+            if len(undercutters) == 0:
+                return False
+            else:
+                return sum([self._graph[und][inn]['weight'] 
+                            for und in undercutters]) <= 0
         return False
 
     def _get_weight(self, name1, name2):
@@ -162,13 +180,16 @@ class ArgumentationFramework(object):
         if inn:
             return self._graph[inn][name2]['weight']
         else:
-            return -1
+            return 0
 
     def _is_node_grounded(self, arg_name):
         return self._get_node(arg_name)['grounded']
 
     def _get_node_argument(self, arg_name):
-        return self._get_node(arg_name)['argument']
+        try:
+            return self._get_node(arg_name)['argument']
+        except:
+            return None
 
     def _get_node(self, name):
         if name:
