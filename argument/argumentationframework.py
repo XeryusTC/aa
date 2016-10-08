@@ -245,23 +245,27 @@ class ArgumentationFramework(object):
         pass
 
     def write_dot(self, path):
-        def node_to_style(node):
-            if node == {}:
-                return {'style': 'filled', 'shape': 'point', 'width': 0.01}
+        def node_to_style(node, att):
+            if att == {}:
+                pred = [pred for _, pred in self._graph.out_edges(node)][0]
+                return {'style': 'filled', 
+                        'shape': 'point', 
+                        'group': str(pred),
+                        'width': 0.01}
             else:
-                return {'fillcolor': 'green' if node['grounded'] else 'red',
-                         'shape': 'box',
+                return {'fillcolor': 'green' if att['grounded'] else 'red',
+                        'shape': 'box', 'group': str(node),
                          'style': 'filled'}
-        def edge_to_style(node):
-            if node['type'] == 'inner':
+        def edge_to_style(u, v, att):
+            if att['type'] == 'inner':
                 return {'arrowhead': 'none'}
-            elif node['weight'] > 0:
+            elif att['weight'] > 0:
                 return {'arrowhead': 'normal'}
             else:
                 return {'arrowhead': 'diamond'}
         graph = nx.DiGraph()
-        graph.add_nodes_from([(n, node_to_style(att))
+        graph.add_nodes_from([(n, node_to_style(n, att))
             for n, att in self._graph.nodes_iter(data = True)])
-        graph.add_edges_from([(u, v, edge_to_style(att))
+        graph.add_edges_from([(u, v, edge_to_style(u, v, att))
             for u, v, att in self._graph.edges_iter(data = True)])
         pydot.write_dot(graph, path)
