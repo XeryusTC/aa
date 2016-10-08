@@ -121,8 +121,17 @@ class ArgumentationFramework(object):
                     type = "undercut", weight = -weight)
             self._update(args[1].get_name())
 
-    def add_support(self, arg1, arg2):
-        pass
+    def add_support(self, arg1, arg2, weight = 1):
+        if not self.has_argument(arg2):
+            raise ValueError("Supported argument not in the framework!")
+        if not self.has_argument(arg1):
+            self.add_argument(arg1)
+        self._add_edge(arg1.get_name(), arg2.get_name(), "support", weight)
+        if self._detect_cycles():
+            self._recalculate_grounded()
+        else:
+            self._update(arg2.get_name())
+        return True
 
     def remove_argument(self, argument):
         if not self.has_argument(argument):
@@ -157,8 +166,8 @@ class ArgumentationFramework(object):
         self._graph.remove_edge(arg1.get_name(), inn)
         self._update(args[1].get_name())
 
-    def remove_support(self, argument):
-        pass
+    def remove_support(self, arg1, arg2):
+        self.remove_attack(arg1, arg2)
 
     def has_argument(self, argument):
         name = argument.get_name()
