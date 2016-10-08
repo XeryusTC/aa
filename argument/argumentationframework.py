@@ -112,8 +112,14 @@ class ArgumentationFramework(object):
             self._update(arg2.get_name())
         return True
 
-    def add_undercut(self, arg1, arg2):
-        pass
+    def add_undercut(self, arg, args, weight = 1):
+        inn = self._get_inner_node(*args)
+        if inn:
+            if not self.has_argument(arg):
+                self.add_argument(arg)
+            self._graph.add_edge(arg.get_name(), inn, 
+                    type = "undercut", weight = -weight)
+            self._update(args[1].get_name())
 
     def add_support(self, arg1, arg2):
         pass
@@ -146,8 +152,10 @@ class ArgumentationFramework(object):
         self._update(arg2.get_name())
         return True
 
-    def remove_undercut(self, argument):
-        pass
+    def remove_undercut(self, arg1, args):
+        inn = self._get_inner_node(args[0].get_name(), args[1].get_name())
+        self._graph.remove_edge(arg1.get_name(), inn)
+        self._update(args[1].get_name())
 
     def remove_support(self, argument):
         pass
