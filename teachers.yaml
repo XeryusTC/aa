@@ -3,26 +3,60 @@ teachers:
       courses: 
       - name: 'Imperatief Programmeren'
         students: 180
-        lectures: 2 
+        lectures: 2
+        beamer: 1
       - name: 'Functional Programming'
         students: 99
-        lectures: 2 
+        lectures: 2
+        beamer: 1
       - name: 'Signals and Systems'
         students: 81
-        lectures: 2 
+        lectures: 2
+        beamer: 0
+      preferences:
+      - room: 289
+        weight: 1.0
+      - room: 151
+        weight: 0.8
+      - room: 253
+        weight: 0.6
+      - room: 222
+        weight: 0.4
     - name: 'Rinike Verbrugge'
       courses:
       - name: 'Multi Agent Systems'
         students: 50
-        lectures: 2 
+        lectures: 2
+        beamer: 1
       - name: 'Introduction to Logic'
         students: 105
-        lectures: 2 
+        lectures: 2
+        beamer: 0
+      preferences:
+      - room: 289
+        weight: 0.3
+      - room: 151
+        weight: 0.5
+      - room: 253
+        weight: 0.7
+      - room: 222
+        weight: 0.9        
     - name: 'Bart Verheij'
       courses: 
       - name: 'Arguing Agents'
         students: 34
-        lectures: 2 
+        lectures: 2
+        beamer: 1
       - name: 'Knowledge and Agent Technology'
         students: 96
         lectures: 1
+        beamer: 1
+      preferences:
+      - room: 289
+        weight: 0.2
+      - room: 151
+        weight: 0.7
+      - room: 253
+        weight: 0.8
+      - room: 222
+        weight: 0.4

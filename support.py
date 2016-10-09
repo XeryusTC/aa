@@ -10,7 +10,7 @@ from argument.sizeargument import SizeArgument
 
 class Support:
     def __init__(self):
-        bullshit = []
+        self.bullshit = []
 
 def debateRoom(targetRoom, agents):
     interestedAgents = []
@@ -25,7 +25,11 @@ def debateRoom(targetRoom, agents):
             claims.append(c)
 
     print("===Claims===")
-    print(claims)
+    #print claims
+    for claim in claims:
+        print(claim)
+    print("")
+    
     for claim1 in claims:
         for claim2 in claims:
             if claim1 != claim2:
@@ -33,11 +37,12 @@ def debateRoom(targetRoom, agents):
 
     while True:
         for agent in interestedAgents:
-            print("Agent: " + str(agent))
+            print("Agent: " + agent.get_name())
             counter = agent.make_counter(fw, targetRoom)
             print("Counter: " + str(counter))
             if counter:
                 fw.add_attack(counter.attacker, counter.attackee)
+            print("")
         winning = [claim for claim in claims if fw.is_grounded(claim)]
         break
 
@@ -71,7 +76,13 @@ if __name__ == '__main__':
 
     print("===Teachers===")
     for teacher in teachers:
-        print(teacher)
+        print(teacher.name)
+        print("   Courses---")
+        for course in teacher.courses:
+            print(course)
+        print("   Room Preferences---")
+        for preference in teacher.room_preferences:
+            print(preference)
 
     print('')
 

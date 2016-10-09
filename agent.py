@@ -1,16 +1,21 @@
 import yaml
 from argument.sizeargument import SizeArgument
+from argument.beamerargument import BeamerArgument
 from argument.argument import Counter
 
 class Agent(object):
-    def __init__(self, name, courses = []):
+    def __init__(self, name, courses = [], room_preferences = []):
         self.name = name
         self.courses = courses
         self.active_course = None
+        self.room_preferences = room_preferences
 
     def __str__(self):
-       return '#<{} | course: {} >'.format(self.name, self.courses)
+        return '#<{} | courses: {} | preferences: {}>'.format(self.name, self.courses, self.room_preferences)
 
+    def get_name(self):
+        return self.name
+    
     def make_counter(self, fw, room):
         grounded_others = [arg for arg in fw.get_grounded()
                             if arg.owner != self]
@@ -34,27 +39,49 @@ class Agent(object):
         own_arguments = [arg for arg in fw.get_arguments()
                             if arg.owner == self]
         other = arg.owner.active_course
+        
+        #Size argument
         if self.active_course.students >= other.students:
-            sizearg = [a for a in own_arguments
+            list_size_arguments = [a for a in own_arguments
                         if isinstance(a, SizeArgument)]
-            if len(sizearg) != 0:
-                if fw.is_grounded(sizearg[0]):
-                    return Counter("attack", sizearg[0], arg)
+            if len(list_size_arguments) != 0:
+                if fw.is_grounded(list_size_arguments[0]):
+                    return Counter("attack", list_size_arguments[0], arg)
             else:
                 return Counter("attack", 
                         SizeArgument(fw, self, room, self.active_course.students),
                         arg)
-        return None
 
+        #Beamer argument    
+        elif self.active_course.beamer >= other.beamer:
+            list_beamer_arguments = [a for a in own_arguments
+                        if isinstance(a, BeamerArgument)]
+            if len(list_beamer_arguments) != 0:
+                if fw.is_grounded(list_beamer_arguments[0]):
+                    return Counter("attack", list_beamer_arguments[0], arg)
+            else:
+                return Counter("attack", 
+                        BeamerArgument(fw, self, room, self.active_course.beamer),
+                        arg)
+        return None
+    
 class Course:
-    def __init__(self, name, size, lectures):
+    def __init__(self, name, size, lectures, beamer):
         self.name = name
         self.students = size
         self.lectures = lectures
-
+        self.beamer = beamer
+        
     def __str__(self):
-       return '#<{} | size: {} | lectures {} >'.format(self.name, self.students,
-            self.lectures)
+        return '#<{} | size: {} | lectures {} | beamer {} >'.format(self.name, self.students, self.lectures, self.beamer)
+
+class Room_Preference:
+    def __init__(self, room, weight):
+        self.room = room
+        self.weight = weight
+        
+    def __str__(self):
+        return '#< room {} | weight {} >'.format(self.room, self.weight)
 
 def load_agents(filename):
     with open(filename, 'r') as f:
@@ -63,7 +90,9 @@ def load_agents(filename):
     teacher_list = []
     for teacher in agent_doc['teachers']:
         r = Agent(teacher['name'],
-            [Course(course['name'], course['students'], course['lectures'])
-                for course in teacher['courses']])
+            [Course(course['name'], course['students'], course['lectures'], course['beamer'])
+                for course in teacher['courses']],
+            [Room_Preference(preference['room'], preference['weight'])
+                for preference in teacher['preferences']])
         teacher_list.append(r)
     return teacher_list
