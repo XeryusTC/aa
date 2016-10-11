@@ -37,7 +37,7 @@ class ArgumentationFramework(object):
 
     def _update(self, arg_name):
         args = [att.get_name()
-                for att, arg in self.get_attacks(self._get_node_argument(arg_name), grounded = True)
+                for att, arg in self.get_attacks_and_support(self._get_node_argument(arg_name), grounded = True)
                 if not self.is_undercut(att, arg)]
         if args:
             just = sum([self._get_weight(arg, arg_name) for arg in args]) > 0
@@ -58,7 +58,7 @@ class ArgumentationFramework(object):
     def _recalculate_grounded(self):
         calulated = []
         for arg in self.get_arguments():
-            if len(self.get_attacks(arg)) == 0:
+            if len(self.get_attacks_and_support(arg)) == 0:
                 self._graph.add_node(arg.get_name(), grounded = True)
                 calulated.append(arg.get_name())
             else:
@@ -223,7 +223,7 @@ class ArgumentationFramework(object):
                                 if 'argument' in d and 
                                     self._is_node_grounded(n)]
 
-    def get_attacks(self, argument = None, grounded = False):
+    def get_attacks_and_support(self, argument = None, grounded = False):
         if argument:
             return [(self._get_node_argument(p), argument)
                     for att, _, d in self._graph.in_edges(argument.get_name(), data = True)
@@ -235,8 +235,18 @@ class ArgumentationFramework(object):
             ret = []
             args = self.get_arguments()
             for arg in args:
-                ret.extend(self.get_attacks(arg, grounded = grounded))
+                ret.extend(self.get_attacks_and_support(arg, grounded = grounded))
             return ret
+
+    def get_attacks(self, argument = None, grounded = False):
+        return [(att, arg) 
+                for att, arg in self.get_attacks_and_support(argument, grounded)
+                if self._get_weight(att.get_name(), arg.get_name()) <= 0]
+
+    def get_supports(self, argument = None, grounded = False):
+        return [(att, arg) 
+                for att, arg in self.get_attacks_and_support(argument, grounded)
+                if self._get_weight(att.get_name(), arg.get_name()) > 0]
 
     def size(self):
         return self._size
