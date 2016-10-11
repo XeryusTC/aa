@@ -68,22 +68,23 @@ class ArgumentationFramework(object):
             calulated = new_args
             new_args = []
             for arg in calulated:
-                if self._is_node_grounded(arg):
-                    for inner in self._graph.successors_iter(arg):
-                        for arg_name in self._graph.successors_iter(inner):
-                            self._graph.add_node(arg_name, grounded = False)
+                for inner in self._graph.successors_iter(arg):
+                    for arg_name in self._graph.successors_iter(inner):
+                        ground_att = [self.is_grounded(att)
+                                        for att in 
+                                        self.get_attacks_and_support(
+                                            self._get_node_argument(arg_name))]
+                        if all([att != None for att in ground_att]):
+                            # All the predecessors are calculated
+                            args = [att.get_name()
+                                    for att, arg in self.get_attacks_and_support(self._get_node_argument(arg_name), grounded = True)
+                                    if not self.is_undercut(att, arg)]
+                            if args:
+                                just = sum([self._get_weight(arg, arg_name) for arg in args]) > 0
+                            else:
+                                just = True
+                            self._graph.add_node(arg_name, grounded = just)
                             new_args.append(arg_name)
-                else:
-                    for inner in self._graph.successors_iter(arg):
-                        for arg_name in self._graph.successors_iter(inner):
-                            ground_att = [self._is_node_grounded(att)
-                                            for inner in self._graph.predecessors_iter(arg_name)
-                                            for att in self._graph.predecessors_iter(inner)]
-                            if all([att != None for att in ground_att]):
-                                # All the predecessors are calculated
-                                just = not any(ground_att)
-                                self._graph.add_node(arg_name, grounded = just)
-                                new_args.append(arg_name)
 
     def add_argument(self, argument):
         try:
