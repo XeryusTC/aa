@@ -27,7 +27,7 @@ def load_rooms(filename):
     available_rooms = []
     for room in room_doc['rooms']:
         for time in room_doc['times']:
-            r = Room(room['room'], room['size'], room['beamer'], time['start'], time['end'])
+            r = Room((room['room']), room['size'], room['beamer'], time['start'], time['end'])
             available_rooms.append(r)
     return available_rooms
 

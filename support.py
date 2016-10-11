@@ -6,7 +6,6 @@ import rooms
 import agent
 from argument import *
 from argument.claim import Claim
-from argument.sizeargument import SizeArgument
 
 class Support:
     def __init__(self):
@@ -59,13 +58,14 @@ def debateRoom(targetRoom, agents):
 
     return course
 
-#Check if the room is a good option for the agent (only checks if room is big enough and agent doesn't have a room yet for now)
+#Check if the room is a good option for the agent (checks if all requirements are met and agent doesn't have a room yet for now)
 def viableClaim(agent, room):
     class_size = 0
     for course in agent.courses:
         if course.lectures > 0 \
                 and room.size >= course.students \
-                and course.students > class_size:
+                and course.students > class_size\
+                and room.beamer >= course.beamer:
             agent.active_course = course
             class_size = course.students
     return class_size != 0
@@ -85,7 +85,7 @@ if __name__ == '__main__':
             print(preference)
 
     print('')
-
+    
     schedule = []
     for room in rooms:
         print("Debating room:", room)

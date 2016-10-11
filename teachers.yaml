@@ -22,7 +22,7 @@ teachers:
         weight: 0.6
       - room: 222
         weight: 0.4
-    - name: 'Rinike Verbrugge'
+    - name: 'Rineke Verbrugge'
       courses:
       - name: 'Multi Agent Systems'
         students: 50
@@ -36,7 +36,7 @@ teachers:
       - room: 289
         weight: 0.3
       - room: 151
-        weight: 0.5
+        weight: 0.4
       - room: 253
         weight: 0.7
       - room: 222

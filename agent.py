@@ -1,10 +1,12 @@
 import yaml
+from collections import defaultdict
 from argument.sizeargument import SizeArgument
 from argument.beamerargument import BeamerArgument
+from argument.roompreferenceargument import RoomPreferenceArgument
 from argument.argument import Counter
 
 class Agent(object):
-    def __init__(self, name, courses = [], room_preferences = []):
+    def __init__(self, name, courses = [], room_preferences = {}):
         self.name = name
         self.courses = courses
         self.active_course = None
@@ -35,6 +37,7 @@ class Agent(object):
                         return counter
         return None
 
+    #Make an argument. Agent will first try to make a size argument. If it can't, it'll try a beamer argument. If it also can't do that, it will always make a preference argument. 
     def construct_attack(self, fw, room, arg):
         own_arguments = [arg for arg in fw.get_arguments()
                             if arg.owner == self]
@@ -63,6 +66,19 @@ class Agent(object):
                 return Counter("attack", 
                         BeamerArgument(fw, self, room, self.active_course.beamer),
                         arg)
+            
+        #Preference argument    
+        else:
+            list_preference_arguments = [a for a in own_arguments
+                        if isinstance(a, RoomPreferenceArgument)]
+            if len(list_preference_arguments) != 0:
+                if fw.is_grounded(list_preference_arguments[0]):
+                    return Counter("attack", list_preference_arguments[0], arg)
+            else:
+                return Counter("attack", 
+                        RoomPreferenceArgument(fw, self, room),
+                        arg)
+            
         return None
     
 class Course:
@@ -89,10 +105,13 @@ def load_agents(filename):
 
     teacher_list = []
     for teacher in agent_doc['teachers']:
+        prefDict = defaultdict(lambda:0.5)
+        for preference in teacher['preferences']:
+            prefDict[preference['room']] = float(preference['weight']) 
+        
         r = Agent(teacher['name'],
             [Course(course['name'], course['students'], course['lectures'], course['beamer'])
                 for course in teacher['courses']],
-            [Room_Preference(preference['room'], preference['weight'])
-                for preference in teacher['preferences']])
+            prefDict)
         teacher_list.append(r)
     return teacher_list

@@ -8,8 +8,9 @@ class BeamerArgument(Argument):
         self.beamer = beamer #Requirement of the course
 
     def __repr__(self):
-        return "#<argument number: " + str(self.get_name()) + \
-            " | owner: "+ str(self.owner.name) +" | type: beamer argument | avail: "+ str(self.room.beamer) +" req: "+str(self.beamer) +">"
+        return "#<beamer argument number: " + str(self.get_name()) + \
+            " | owner: "+ str(self.owner.name) +" | available: "+ \
+            str(self.room.beamer) +" required: "+str(self.beamer) +">"
         
     def get_beamer(self):
         return self.beamer

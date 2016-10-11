@@ -2,11 +2,16 @@ from argument import Argument
 from argument.claim import Claim
 
 class RoomPreferenceArgument(Argument):
-    def __init__(self, framework, owner, room, room_preference, name = None):
+    def __init__(self, framework, owner, room, name = None):
         super(RoomPreferenceArgument, self).__init__(framework, owner, name)
         self.room = room
-        self.room_preference = room_preference
-
+        self.room_preference = self.owner.room_preferences[self.room.name]
+    
+    def __repr__(self):
+        return "#<room-preference argument number: " + str(self.get_name()) + \
+            " | owner: "+ str(self.owner.name) +" | room: "+ \
+            str(self.room.name) +" preference: "+str(self.owner.room_preferences[self.room.name]) + ">"
+    
     def get_room_preference(self):
         return self.room_preference
 

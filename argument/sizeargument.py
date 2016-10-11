@@ -7,6 +7,11 @@ class SizeArgument(Argument):
         self.room = room
         self.size = size #Requirement of the course
 
+    def __repr__(self):
+        return "#<size argument number: " + str(self.get_name()) + \
+            " | owner: "+ str(self.owner.name) +" | available: "+ \
+            str(self.room.size) +" required: "+str(self.size) +">"        
+        
     def get_size(self):
         return self.size
 
