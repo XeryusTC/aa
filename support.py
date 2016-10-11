@@ -37,7 +37,12 @@ def debateRoom(targetRoom, agents):
             counter = agent.make_counter(fw, targetRoom)
             print("Counter: " + str(counter))
             if counter:
-                fw.add_attack(counter.attacker, counter.attackee)
+                if counter.type == "attack": 
+                    fw.add_attack(counter.attacker, counter.attackee)
+                elif counter.type == "support":
+                    fw.add_support(counter.attacker, counter.attackee)
+                elif counter.type == "undercut":
+                    fw.add_undercut(counter.attacker, counter.attackee)
         winning = [claim for claim in claims if fw.is_grounded(claim)]
         break
 
