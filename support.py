@@ -4,6 +4,7 @@ from datetime import datetime
 
 import rooms
 import agent
+from schedule import Schedule
 from argument import *
 from argument.claim import Claim
 from argument.sizeargument import SizeArgument
@@ -80,25 +81,17 @@ if __name__ == '__main__':
 
     print('')
 
-    schedule = []
+    schedule = Schedule()
     for room in rooms:
         print("Debating room:", room)
         course = debateRoom(room, teachers)
         print("Winning course:", course)
         if course:
-            schedule.append({'room': room, 'course': course})
+            schedule.add(room, course)
 
-    # Write the schedule
-    cal = Calendar()
-    today = datetime.today().strftime('%Y-%m-%d')
-    for slot in schedule:
-        e = Event()
-        e.name = "{room} {course_name}".format(room=slot['room'].name,
-                course_name=slot['course'].name)
-        print("{}T{:0>2}:00:00".format(today, slot['room'].start_time))
-        e.begin = "{}T{:0>2}:00:00".format(today, slot['room'].start_time)
-        e.end   = "{}T{:0>2}:00:00".format(today, slot['room'].end_time)
-        cal.events.append(e)
+    print(schedule.as_plain())
+    tex = schedule.as_tex_simple()
 
-    with open('schedule.ics', 'w') as f:
-        f.writelines(cal)
+    with open('/tmp/schedule.tex', 'w') as f:
+        f.write(tex)
+    print(tex)

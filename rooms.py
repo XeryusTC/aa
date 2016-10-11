@@ -1,6 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import yaml
+from enum import Enum
+
+class Days(Enum):
+    MONDAY = 0
+    TUESDAY = 1
+    WEDNESDAY = 2
+    THURSDAY = 3
+    FRIDAY = 4
+
+    def __str__(self):
+        return self.name.title()
 
 class Room:
     def __init__(self, name, size, start_time, end_time):
@@ -8,6 +19,7 @@ class Room:
         self.size = size
         self.start_time = start_time
         self.end_time = end_time
+        self.day = Days.MONDAY
 
     def __str__(self):
         return '{} (seats {}) {:0>2}:00:00-{:0>2}:00:00'.format(
@@ -15,7 +27,7 @@ class Room:
 
     def get_size(self):
         return self.size
-                   
+
 def load_rooms(filename):
     with open(filename, 'r') as f:
         room_doc = yaml.load(f)
