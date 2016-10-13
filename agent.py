@@ -7,6 +7,7 @@ class Agent(object):
         self.name = name
         self.courses = courses
         self.active_course = None
+        self.occupied = []
 
     def __str__(self):
        return '#<{} | course: {} >'.format(self.name, self.courses)
@@ -41,10 +42,25 @@ class Agent(object):
                 if fw.is_grounded(sizearg[0]):
                     return Counter("attack", sizearg[0], arg)
             else:
-                return Counter("attack", 
+                return Counter("attack",
                         SizeArgument(fw, self, room, self.active_course.students),
                         arg)
         return None
+
+    def has_won(self, room):
+        slot = (room.day, room.start_time, room.end_time)
+        self.occupied.append(slot)
+        self.active_course.lectures -= 1
+        return self.active_course
+
+    def is_free(self, day, start, end):
+        for d, s, e in self.occupied:
+            if d != day:
+                continue
+            if start < s < end or start < e < end or \
+                (s < start and e > end):
+                return False
+        return (day, start, end) not in self.occupied
 
 class Course:
     def __init__(self, name, size, lectures):

@@ -1,5 +1,4 @@
 import random
-from ics import Calendar, Event
 from datetime import datetime
 
 import rooms
@@ -38,7 +37,7 @@ def debateRoom(targetRoom, agents):
             counter = agent.make_counter(fw, targetRoom)
             print("Counter: " + str(counter))
             if counter:
-                if counter.type == "attack": 
+                if counter.type == "attack":
                     fw.add_attack(counter.attacker, counter.attackee)
                 elif counter.type == "support":
                     fw.add_support(counter.attacker, counter.attackee)
@@ -49,8 +48,7 @@ def debateRoom(targetRoom, agents):
 
     if winning:
         winner = random.choice(winning) # TODO: some better method of picking winner
-        course = winner.owner.active_course
-        course.lectures -= 1
+        course = winner.owner.has_won(targetRoom)
     else:
         course = None
 
@@ -60,8 +58,13 @@ def debateRoom(targetRoom, agents):
 
     return course
 
-#Check if the room is a good option for the agent (only checks if room is big enough and agent doesn't have a room yet for now)
 def viableClaim(agent, room):
+    # Check if the agent is free
+    if not agent.is_free(room.day, room.start_time, room.end_time):
+        return False
+
+    #Check if the room is a good option for the agent (only checks if room
+    #is big enough and agent doesn't have a room yet for now)
     class_size = 0
     for course in agent.courses:
         if course.lectures > 0 \
