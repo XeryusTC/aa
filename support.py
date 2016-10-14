@@ -47,16 +47,17 @@ def debateRoom(targetRoom, agents):
         break
 
     if winning:
-        winner = random.choice(winning) # TODO: some better method of picking winner
-        course = winner.owner.has_won(targetRoom)
+        winner = random.choice(winning).owner # TODO: some better method of picking winner
+        course = winner.has_won(targetRoom)
     else:
         course = None
+        winner = None
 
     # Reset agents course claiming state
     for agent in agents:
         agent.active_course = None
 
-    return course
+    return course, winner
 
 def viableClaim(agent, room):
     # Check if the agent is free
@@ -87,10 +88,10 @@ if __name__ == '__main__':
     schedule = Schedule()
     for room in rooms:
         print("Debating room:", room)
-        course = debateRoom(room, teachers)
+        course, agent = debateRoom(room, teachers)
         print("Winning course:", course)
         if course:
-            schedule.add(room, course)
+            schedule.add(room, course, agent)
 
     print(schedule.as_plain())
     tex = schedule.as_tex_simple()

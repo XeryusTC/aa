@@ -12,13 +12,14 @@ class Schedule:
             Days.FRIDAY: {},
         }
 
-    def add(self, room, course):
+    def add(self, room, course, agent):
         if room.start_time not in self.days[room.day].keys():
             self.days[room.day][room.start_time] = []
 
         self.days[room.day][room.start_time].append({
             'room': room.name,
             'course': course,
+            'agent': agent,
         })
 
     def as_plain(self):
@@ -28,52 +29,9 @@ class Schedule:
             for time in sorted(self.days[day]):
                 out = "{}\n    {}:00:00".format(out, time)
                 for course in self.days[day][time]:
-                    out = "{}\n        {}".format(out, course['course'].name)
-        return out
-
-    def as_tex(self):
-        # Find the number of columns per day and in total
-        width = {}
-        for day in Days:
-            if day not in width.keys():
-                width[day] = 1
-            for time in self.days[day]:
-                if len(self.days[day][time]) > width[day]:
-                    width[day] = len(self.days[day][time])
-        total_width = sum(width[day] for day in Days)
-
-        # Find the timeslots
-        times = set()
-        for day in Days:
-            for time in self.days[day]:
-                times.add(time)
-        times = sorted(list(times))
-
-        # Start the table
-        out = start.substitute(cols='|l' * total_width)
-        # Add day header
-        out += " " * 8
-        for day in Days:
-            out += r' & '
-            first = False
-            out += day_header.substitute(width=width[day],
-                cols='|'.join('l'*width[day]),
-                name=day)
-        out += r'\\ \hline'
-        out += '\n'
-        # Complete the rows
-        for time in times:
-            out += '\n{pad}{time}:00'.format(time=time, pad=" "*8)
-            for day in Days:
-                if time not in self.days[day].keys():
-                    out += ' & '
-                    continue
-                for course in self.days[day][time]:
-                    out += ' & ' + course['course'].name
-            out += r'\\'
-        # Close the table environments
-        out += end.substitute()
-
+                    out = "{}\n        ({}) {} by {}".format(out,
+                        course['room'], course['course'].name,
+                        course['agent'].name)
         return out
 
     def as_tex_simple(self):
@@ -110,8 +68,12 @@ class Schedule:
                     out += ' ' * 8 + ' & '
                 for day in Days:
                     try:
-                        print(self.days[day][time][i])
-                        out += self.days[day][time][i]['course'].name
+                        course = self.days[day][time][i]
+                        out += bla.substitute(
+                            room=course['room'],
+                            course=course['course'].name,
+                            teacher=course['agent'].name,
+                        )
                     except KeyError:
                         pass
                     if day != Days.FRIDAY:
@@ -132,3 +94,4 @@ end = Template(r"""
     \end{tabular}
 \end{table}""")
 day_header = Template(r"""\multicolumn{$width}{|c|}{$name}""")
+bla = Template(r"""($room) $course by $teacher""")
