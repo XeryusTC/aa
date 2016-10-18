@@ -6,11 +6,10 @@ import agent
 from schedule import Schedule
 from argument import *
 from argument.claim import Claim
-from argument.sizeargument import SizeArgument
 
 class Support:
     def __init__(self):
-        bullshit = []
+        self.bullshit = []
 
 def debateRoom(targetRoom, agents):
     interestedAgents = []
@@ -25,7 +24,11 @@ def debateRoom(targetRoom, agents):
             claims.append(c)
 
     print("===Claims===")
-    print(claims)
+    #print claims
+    for claim in claims:
+        print(claim)
+    print("")
+    
     for claim1 in claims:
         for claim2 in claims:
             if claim1 != claim2:
@@ -33,7 +36,7 @@ def debateRoom(targetRoom, agents):
 
     while True:
         for agent in interestedAgents:
-            print("Agent: " + str(agent))
+            print("Agent: " + agent.get_name())
             counter = agent.make_counter(fw, targetRoom)
             print("Counter: " + str(counter))
             if counter:
@@ -43,6 +46,7 @@ def debateRoom(targetRoom, agents):
                     fw.add_support(counter.attacker, counter.attackee)
                 elif counter.type == "undercut":
                     fw.add_undercut(counter.attacker, counter.attackee)
+            print("")
         winning = [claim for claim in claims if fw.is_grounded(claim)]
         break
 
@@ -70,7 +74,8 @@ def viableClaim(agent, room):
     for course in agent.courses:
         if course.lectures > 0 \
                 and room.size >= course.students \
-                and course.students > class_size:
+                and course.students > class_size\
+                and room.beamer >= course.beamer:
             agent.active_course = course
             class_size = course.students
     return class_size != 0
@@ -81,11 +86,18 @@ if __name__ == '__main__':
 
     print("===Teachers===")
     for teacher in teachers:
-        print(teacher)
+        print(teacher.name)
+        print("   Courses---")
+        for course in teacher.courses:
+            print(course)
+        print("   Room Preferences---")
+        for preference in teacher.room_preferences:
+            print(preference)
 
     print('')
 
     schedule = Schedule()
+
     for room in rooms:
         print("Debating room:", room)
         course, agent = debateRoom(room, teachers)

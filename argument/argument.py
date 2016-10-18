@@ -1,9 +1,9 @@
 class Argument(object):
     def __init__(self, framework, owner, name = None):
-        self._name = name
-        self._fw = framework
+        self.name = name
+        self.fw = framework
         self.owner = owner
-        self._fw.add_argument(self)
+        self.fw.add_argument(self)
 
     def __repr__(self):
         try:
@@ -14,20 +14,20 @@ class Argument(object):
                 " | owner: "+ str(self.owner) +">"
 
     def get_name(self):
-        return self._name
+        return self.name
 
     def set_name(self, name):
-        if self._name is not None:
+        if self.name is not None:
             raise RenameError("You can't rename an argument")
         else:
-            self._name = name
-        return self._name
+            self.name = name
+        return self.name
 
     def get_attacks(self, grounded = False):
-        return self._fw.get_attacks(argument = self, grounded = grounded)
+        return self.fw.get_attacks(argument = self, grounded = grounded)
 
     def is_grounded(self):
-        return self._fw.is_grounded(self)
+        return self.fw.is_grounded(self)
 
     def can_attack(self, other):
         raise NotImplementedError("Implement `can_attack` yourself!")
