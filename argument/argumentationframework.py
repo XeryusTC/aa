@@ -252,9 +252,6 @@ class ArgumentationFramework(object):
     def size(self):
         return self._size
 
-    def copy(self):
-        pass
-
     def write_dot(self, path):
         def node_to_style(node, att):
             if att == {}:
