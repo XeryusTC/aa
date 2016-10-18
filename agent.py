@@ -4,6 +4,7 @@ from argument.sizeargument import SizeArgument
 from argument.beamerargument import BeamerArgument
 from argument.roompreferenceargument import RoomPreferenceArgument
 from argument.argument import Counter
+from argument.claim import Claim
 
 class Agent(object):
     def __init__(self, name, courses = [], room_preferences = {}):
@@ -14,69 +15,110 @@ class Agent(object):
         self.room_preferences = room_preferences
 
     def __str__(self):
-        return '#<{} | courses: {} | preferences: {}>'.format(self.name, self.courses, self.room_preferences)
+        return '#<{} | courses: {} | preferences: {}>'.format(self.name, str(self.courses), str(self.room_preferences))
 
     def get_name(self):
         return self.name
     
     def make_counter(self, fw, room):
-        grounded_others = [arg for arg in fw.get_grounded()
-                            if arg.owner != self]
+        own_ungrounded = [arg for arg in fw.get_arguments()
+                          if arg.owner == self
+                          and not fw.is_grounded(arg)]
+        
+        
+        own_grounded = [arg for arg in fw.get_grounded()
+                          if arg.owner == self]
+        
+       
+        if len(own_ungrounded) > 0:
+            for arg in own_ungrounded:
+                if isinstance(arg, Claim): 
+                    supports = fw.get_supports(arg)
+                    if len(supports) < 3:
+                        types = [type(arg) for arg,_ in supports]
+                        if  (SizeArgument not in types):
+                            size_arguments = [arg for arg in own_grounded 
+                                              if isinstance(arg, SizeArgument)]
+                            if len(size_arguments) < 1:
+                                return Counter("support",
+                                    SizeArgument(fw, self, room, self.active_course.students), arg)
+                            else:
+                                return Counter("support", size_arguments[0], arg)
+                        elif  (BeamerArgument not in types):
+                            size_arguments = [arg for arg in own_grounded 
+                                              if isinstance(arg, BeamerArgument)]
+                            if len(size_arguments) < 1:
+                                return Counter("support",
+                                    BeamerArgument(fw, self, room, self.active_course.beamer), arg)
+                            else:
+                                return Counter("support", size_arguments[0], arg)
+                        elif  (RoomPreferenceArgument not in types):
+                            size_arguments = [arg for arg in own_grounded 
+                                              if isinstance(arg, RoomPreferenceArgument)]
+                            if len(size_arguments) < 1:
+                                return Counter("support",
+                                    RoomPreferenceArgument(fw, self, room), arg)
+                            else:
+                                return Counter("support", size_arguments[0], arg)
+        
+        grounded_others = [arg for arg in fw.get_supports(grounded = True)
+                            if arg[1].owner != self]
         if len(grounded_others) != 0:
             for arg in grounded_others:
-                att = self.construct_attack(fw, room, arg)
-                if att:
-                    return att
+                if not fw.is_undercut(*arg):
+                    att = self.construct_attack(fw, room, arg)
+                    if att:
+                        return att
         else:
-            own_ungrounded = [arg for arg in fw.get_arguments()
-                                if arg.owner == self
-                                if not fw.is_grounded(arg)]
             for arg in own_ungrounded:
-                for att, _ in fw.get_attacks(argument = arg):
-                    counter = self.construct_attack(fw,room, att)
-                    if counter:
-                        return counter
+                for att in fw.get_attacks(argument = arg):
+                    if not isinstance(att[0], Claim):
+                        counter = self.construct_attack(fw,room, att)
+                        if counter:
+                            return counter
         return None
 
     #Make an argument. Agent will first try to make a size argument. If it can't, it'll try a beamer argument. If it also can't do that, it will always make a preference argument. 
     def construct_attack(self, fw, room, arg):
         own_arguments = [arg for arg in fw.get_arguments()
                             if arg.owner == self]
-        other = arg.owner.active_course
+        other = arg[0].owner.active_course
         
         #Size argument
-        if self.active_course.students >= other.students:
+        if self.active_course.students >= other.students and isinstance(arg[0], SizeArgument):
             list_size_arguments = [a for a in own_arguments
                         if isinstance(a, SizeArgument)]
             if len(list_size_arguments) != 0:
+                
                 if fw.is_grounded(list_size_arguments[0]):
-                    return Counter("attack", list_size_arguments[0], arg)
+                    return Counter("undercut", list_size_arguments[0], arg)
             else:
-                return Counter("attack",
+                return Counter("undercut",
                         SizeArgument(fw, self, room, self.active_course.students),
                         arg)
 
         #Beamer argument    
-        elif self.active_course.beamer >= other.beamer:
+        elif self.active_course.beamer >= other.beamer and isinstance(arg[0], BeamerArgument):
             list_beamer_arguments = [a for a in own_arguments
                         if isinstance(a, BeamerArgument)]
             if len(list_beamer_arguments) != 0:
                 if fw.is_grounded(list_beamer_arguments[0]):
-                    return Counter("attack", list_beamer_arguments[0], arg)
+                    return Counter("undercut", list_beamer_arguments[0], arg)
             else:
-                return Counter("attack", 
+                return Counter("undercut", 
                         BeamerArgument(fw, self, room, self.active_course.beamer),
                         arg)
             
         #Preference argument    
-        else:
+        elif isinstance(arg[0], RoomPreferenceArgument) and \
+                self.room_preferences[room.name] >= arg[0].owner.room_preferences[room.name]:
             list_preference_arguments = [a for a in own_arguments
                         if isinstance(a, RoomPreferenceArgument)]
             if len(list_preference_arguments) != 0:
                 if fw.is_grounded(list_preference_arguments[0]):
-                    return Counter("attack", list_preference_arguments[0], arg)
+                    return Counter("undercut", list_preference_arguments[0], arg)
             else:
-                return Counter("attack", 
+                return Counter("undercut", 
                         RoomPreferenceArgument(fw, self, room),
                         arg)
             
