@@ -5,6 +5,10 @@ class Claim(Argument):
         super(Claim, self).__init__(framework, agent, name)
         self._room = room
         self._time = time
+        
+    def __str__(self):
+        return "#<claim name: " + str(self.get_name()) + " | owner: " + str(self.owner.name) + \
+                " | room : " + str(self._room) + " | time: " + str(self._time) + ">"
 
     def get_room(self):
         return self._room
