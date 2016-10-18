@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import yaml
+import random
 from enum import Enum
 
 class Days(Enum):
@@ -14,13 +15,13 @@ class Days(Enum):
         return self.name.title()
 
 class Room:
-    def __init__(self, name, size, beamer, start_time, end_time):
+    def __init__(self, name, size, beamer, start_time, end_time, day=Days.MONDAY):
         self.name = name
         self.size = size
         self.beamer = beamer
         self.start_time = start_time
         self.end_time = end_time
-        self.day = Days.MONDAY
+        self.day = day
 
     def __str__(self):
         return '{} (seats {}|beamers {}) {:0>2}:00:00-{:0>2}:00:00'.format(
@@ -28,10 +29,10 @@ class Room:
 
     def get_size(self):
         return self.size
-    
+
     def get_beamer(self):
         return self.beamer
-                   
+
 def load_rooms(filename):
     with open(filename, 'r') as f:
         room_doc = yaml.load(f)
@@ -39,8 +40,11 @@ def load_rooms(filename):
     available_rooms = []
     for room in room_doc['rooms']:
         for time in room_doc['times']:
-            r = Room((room['room']), room['size'], room['beamer'], time['start'], time['end'])
-            available_rooms.append(r)
+            for day in Days:
+                r = Room((room['room']), room['size'], room['beamer'],
+                    time['start'], time['end'], day)
+                available_rooms.append(r)
+    random.shuffle(available_rooms)
     return available_rooms
 
 if __name__ == '__main__':

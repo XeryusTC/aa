@@ -28,7 +28,7 @@ def debateRoom(targetRoom, agents):
     for claim in claims:
         print(claim)
     print("")
-    
+
     for claim1 in claims:
         for claim2 in claims:
             if claim1 != claim2:
@@ -58,6 +58,7 @@ def debateRoom(targetRoom, agents):
     else:
         course = None
         winner = None
+    print(winner, course)
 
     # Reset agents course claiming state
     for agent in agents:

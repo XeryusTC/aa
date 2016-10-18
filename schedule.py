@@ -59,7 +59,7 @@ class Schedule:
                 try:
                     courses = len(self.days[day][time])
                 except KeyError:
-                    pass
+                    courses = 0
                 if courses > lines:
                     lines = courses
 
