@@ -1,9 +1,9 @@
 import random
-from ics import Calendar, Event
 from datetime import datetime
 
 import rooms
 import agent
+from schedule import Schedule
 from argument import *
 from argument.claim import Claim
 from argument.sizeargument import SizeArgument
@@ -37,7 +37,7 @@ def debateRoom(targetRoom, agents):
             counter = agent.make_counter(fw, targetRoom)
             print("Counter: " + str(counter))
             if counter:
-                if counter.type == "attack": 
+                if counter.type == "attack":
                     fw.add_attack(counter.attacker, counter.attackee)
                 elif counter.type == "support":
                     fw.add_support(counter.attacker, counter.attackee)
@@ -47,20 +47,25 @@ def debateRoom(targetRoom, agents):
         break
 
     if winning:
-        winner = random.choice(winning) # TODO: some better method of picking winner
-        course = winner.owner.active_course
-        course.lectures -= 1
+        winner = random.choice(winning).owner # TODO: some better method of picking winner
+        course = winner.has_won(targetRoom)
     else:
         course = None
+        winner = None
 
     # Reset agents course claiming state
     for agent in agents:
         agent.active_course = None
 
-    return course
+    return course, winner
 
-#Check if the room is a good option for the agent (only checks if room is big enough and agent doesn't have a room yet for now)
 def viableClaim(agent, room):
+    # Check if the agent is free
+    if not agent.is_free(room.day, room.start_time, room.end_time):
+        return False
+
+    #Check if the room is a good option for the agent (only checks if room
+    #is big enough and agent doesn't have a room yet for now)
     class_size = 0
     for course in agent.courses:
         if course.lectures > 0 \
@@ -80,25 +85,17 @@ if __name__ == '__main__':
 
     print('')
 
-    schedule = []
+    schedule = Schedule()
     for room in rooms:
         print("Debating room:", room)
-        course = debateRoom(room, teachers)
+        course, agent = debateRoom(room, teachers)
         print("Winning course:", course)
         if course:
-            schedule.append({'room': room, 'course': course})
+            schedule.add(room, course, agent)
 
-    # Write the schedule
-    cal = Calendar()
-    today = datetime.today().strftime('%Y-%m-%d')
-    for slot in schedule:
-        e = Event()
-        e.name = "{room} {course_name}".format(room=slot['room'].name,
-                course_name=slot['course'].name)
-        print("{}T{:0>2}:00:00".format(today, slot['room'].start_time))
-        e.begin = "{}T{:0>2}:00:00".format(today, slot['room'].start_time)
-        e.end   = "{}T{:0>2}:00:00".format(today, slot['room'].end_time)
-        cal.events.append(e)
+    print(schedule.as_plain())
+    tex = schedule.as_tex_simple()
 
-    with open('schedule.ics', 'w') as f:
-        f.writelines(cal)
+    with open('/tmp/schedule.tex', 'w') as f:
+        f.write(tex)
+    print(tex)
