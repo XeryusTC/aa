@@ -34,12 +34,15 @@ def debateRoom(targetRoom, agents):
             if claim1 != claim2:
                 fw.add_attack(claim1, claim2)
 
-    while True:
+    new_arguments = True
+    while new_arguments:
+        new_arguments = False
         for agent in interestedAgents:
             print("Agent: " + agent.get_name())
             counter = agent.make_counter(fw, targetRoom)
             print("Counter: " + str(counter))
             if counter:
+                new_arguments = True
                 if counter.type == "attack":
                     fw.add_attack(counter.attacker, counter.attackee)
                 elif counter.type == "support":
@@ -48,7 +51,6 @@ def debateRoom(targetRoom, agents):
                     fw.add_undercut(counter.attacker, counter.attackee)
             print("")
         winning = [claim for claim in claims if fw.is_grounded(claim)]
-        break
 
     if winning:
         winner = random.choice(winning).owner # TODO: some better method of picking winner
