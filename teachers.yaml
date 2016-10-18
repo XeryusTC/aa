@@ -2,7 +2,7 @@ teachers:
     - name: 'Arnold Meijster'
       courses: 
       - name: 'Imperatief Programmeren'
-        students: 180
+        students: 280
         lectures: 2
         beamer: 1
       - name: 'Functional Programming'
@@ -13,14 +13,44 @@ teachers:
         students: 81
         lectures: 2
         beamer: 0
+      - name: 'Artificial Intelligence 1'
+        students: 130
+        lectures: 2
+        beamer: 1
+      - name: 'Compiler Construction'
+        students: 39
+        lectures: 2
+        beamer: 1
+      - name: 'Computer Architecture'
+        students: 44
+        lectures: 1
+        beamer: 1
+      - name: 'Operating Systems'
+        students: 81
+        lectures: 1
+        beamer: 1
+      - name: 'Program Correctness'
+        students: 81
+        lectures: 2
+        beamer: 1
       preferences:
-      - room: 289
-        weight: 1.0
+      - room: 105
+        weight: 0.2
       - room: 151
         weight: 0.8
+      - room: 165
+        weight: 0.5
+      - room: 222
+        weight: 0.4
       - room: 253
         weight: 0.6
-      - room: 222
+      - room: 267
+        weight: 0.7
+      - room: 280
+        weight: 0.3
+      - room: 289
+        weight: 1.0
+      - room: 293
         weight: 0.4
     - name: 'Rineke Verbrugge'
       courses:
@@ -32,15 +62,37 @@ teachers:
         students: 105
         lectures: 2
         beamer: 0
+      - name: 'Social Complexity'
+        students: 19
+        lectures: 2
+        beamer: 1
+      - name: 'Advanced Logic'
+        students: 87
+        lectures: 2
+        beamer: 0
+      - name: 'Logica en Argumentatietheorie'
+        students: 24
+        lectures: 2
+        beamer: 0
       preferences:
-      - room: 289
-        weight: 0.3
+      - room: 105
+        weight: 0.8
       - room: 151
         weight: 0.4
+      - room: 165
+        weight: 0.5
+      - room: 222
+        weight: 0.9
       - room: 253
         weight: 0.7
-      - room: 222
-        weight: 0.9        
+      - room: 267
+        weight: 0.6
+      - room: 280
+        weight: 0.5
+      - room: 289
+        weight: 0.3
+      - room: 293
+        weight: 0.8
     - name: 'Bart Verheij'
       courses: 
       - name: 'Arguing Agents'
@@ -52,11 +104,75 @@ teachers:
         lectures: 1
         beamer: 1
       preferences:
-      - room: 289
-        weight: 0.2
+      - room: 105
+        weight: 0.6
       - room: 151
         weight: 0.7
-      - room: 253
-        weight: 0.8
+      - room: 165
+        weight: 0.6
       - room: 222
         weight: 0.4
+      - room: 253
+        weight: 0.8
+      - room: 267
+        weight: 0.3
+      - room: 280
+        weight: 0.6
+      - room: 289
+        weight: 0.2
+      - room: 293
+        weight: 0.5
+    - name: 'Lambert Schomaker'
+      courses:
+          - name: 'Handwriting Recognition'
+            students: 22
+            lectures: 1
+            beamer: 1
+      preferences:
+      - room: 105
+        weight: 0.8
+      - room: 151
+        weight: 0.3
+      - room: 165
+        weight: 0.4
+      - room: 222
+        weight: 0.5
+      - room: 253
+        weight: 0.3
+      - room: 267
+        weight: 0.7
+      - room: 280
+        weight: 0.6
+      - room: 289
+        weight: 0.5
+      - room: 293
+        weight: 0.7
+    - name: 'Marco Wiering'
+      courses:
+          - name: 'Machine Learning'
+            students: 60
+            lectures: 1
+            beamer: 1
+          - name: 'Cognitive Robotics'
+            students: 24
+            lectures: 1
+            beamer: 1
+      preferences:
+      - room: 105
+        weight: 0.7
+      - room: 151
+        weight: 0.3
+      - room: 165
+        weight: 0.4
+      - room: 222
+        weight: 0.5
+      - room: 253
+        weight: 0.7
+      - room: 267
+        weight: 0.8
+      - room: 280
+        weight: 0.1
+      - room: 289
+        weight: 0.6
+      - room: 293
+        weight: 0.5

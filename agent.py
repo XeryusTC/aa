@@ -170,6 +170,6 @@ def load_agents(filename):
         r = Agent(teacher['name'],
             [Course(course['name'], course['students'], course['lectures'], course['beamer'])
                 for course in teacher['courses']],
-            prefDict)
+            prefDict, [])
         teacher_list.append(r)
     return teacher_list

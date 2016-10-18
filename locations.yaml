@@ -1,15 +1,30 @@
 rooms:
-    - room: 289
-      size: 40
+    - room: 105
+      size: 120
       beamer: 1
     - room: 151
       size: 294
       beamer: 1
+    - room: 165
+      size: 80
+      beamer: 2
+    - room: 222
+      size: 36
+      beamer: 1
     - room: 253
       size: 120
       beamer: 1
-    - room: 222
-      size: 36
+    - room: 267
+      size: 89
+      beamer: 1
+    - room: 280
+      size: 28
+      beamer: 1
+    - room: 289
+      size: 40
+      beamer: 1
+    - room: 293
+      size: 40
       beamer: 1
 
 times:
