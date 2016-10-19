@@ -103,7 +103,7 @@ class Schedule:
                         if not first:
                             out += "\n" + " " * 8 + "& "
                         first = False
-                        out += bla.substitute(
+                        out += mt_row.substitute(
                             room=course['room'],
                             course=course['course'].name,
                             teacher=course['agent'].name
@@ -121,7 +121,8 @@ mt_start = Template(r"""
 \begin{table}
     \centering
     \caption{$day}
-    \begin{tabular}{l|l}
+    \begin{tabular}{l|r|l|l}
+        Time & Room & Course & Teacher \\ \hline
 """)
 
 mt_end = Template(r"""
@@ -140,3 +141,4 @@ end = Template(r"""
 \end{table}""")
 day_header = Template(r"""\multicolumn{$width}{|c|}{$name}""")
 bla = Template(r"""($room) $course by $teacher""")
+mt_row = Template(r"""$room & $course & $teacher""")
