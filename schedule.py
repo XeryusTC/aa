@@ -74,7 +74,7 @@ class Schedule:
                             course=course['course'].name,
                             teacher=course['agent'].name,
                         )
-                    except KeyError:
+                    except (KeyError, IndexError):
                         pass
                     if day != Days.FRIDAY:
                         out += ' & '
@@ -83,6 +83,51 @@ class Schedule:
         out += end.substitute()
         return out
 
+    def as_tex_multi_table(self):
+        # Find the timeslots
+        times = set()
+        for day in Days:
+            for time in self.days[day]:
+                times.add(time)
+        times = sorted(list(times))
+        out = ""
+
+        for day in Days:
+            out += mt_start.substitute(day=str(day))
+            for time in times:
+                out += r'\hline'
+                out += "\n" + " " * 8 + "{}:00:00 & ".format(time)
+                first = True
+                try:
+                    for course in self.days[day][time]:
+                        if not first:
+                            out += "\n" + " " * 8 + "& "
+                        first = False
+                        out += bla.substitute(
+                            room=course['room'],
+                            course=course['course'].name,
+                            teacher=course['agent'].name
+                        )
+                        out += r"\\"
+                except KeyError:
+                    out += r"\\"
+
+            out += mt_end.substitute()
+
+        return out
+
+
+mt_start = Template(r"""
+\begin{table}
+    \centering
+    \caption{$day}
+    \begin{tabular}{l|l}
+""")
+
+mt_end = Template(r"""
+    \end{tabular}
+\end{table}
+""")
 
 start = Template(r"""
 \begin{table}

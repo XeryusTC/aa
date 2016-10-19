@@ -109,7 +109,7 @@ if __name__ == '__main__':
             schedule.add(room, course, agent)
 
     print(schedule.as_plain())
-    tex = schedule.as_tex_simple()
+    tex = schedule.as_tex_multi_table()
 
     with open('/tmp/schedule.tex', 'w') as f:
         f.write(tex)
