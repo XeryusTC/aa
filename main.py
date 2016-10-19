@@ -83,6 +83,21 @@ def viableClaim(agent, room):
             class_size = course.students
     return class_size != 0
 
+def print_not_scheduled(agents):
+    any_failure = False
+    print('Failed to schedule:')
+    for agent in agents:
+        failure = False
+        for course in agent.courses:
+            if course.lectures > 0:
+                if not failure:
+                    print(" " * 4, agent.name)
+                print(" " * 8, course.name)
+                failure = True
+        any_failure |= failure
+    if not any_failure:
+        print("None")
+
 if __name__ == '__main__':
     rooms = rooms.load_rooms('locations.yaml')
     teachers = agent.load_agents('teachers.yaml')
@@ -108,9 +123,12 @@ if __name__ == '__main__':
         if course:
             schedule.add(room, course, agent)
 
-    print(schedule.as_plain())
+    print('========')
     tex = schedule.as_tex_multi_table()
-
     with open('/tmp/schedule.tex', 'w') as f:
         f.write(tex)
     print(tex)
+    print(schedule.as_plain())
+
+    print('========')
+    print_not_scheduled(teachers)
