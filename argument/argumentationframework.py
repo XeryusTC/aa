@@ -258,19 +258,19 @@ class ArgumentationFramework(object):
                 pred = [pred for _, pred in self._graph.out_edges(node)][0]
                 return {'style': 'filled', 
                         'shape': 'point', 
-                        'group': str(pred),
                         'width': 0.01}
             else:
                 return {'fillcolor': 'green' if att['grounded'] else 'red',
-                        'shape': 'box', 'group': str(node),
+                        'shape': 'box',
                          'style': 'filled'}
         def edge_to_style(u, v, att):
+            weight = 4 if self._get_node_argument(v) != None else 1
             if att['type'] == 'inner':
-                return {'arrowhead': 'none'}
+                return {'arrowhead': 'none', 'weight': 4}
             elif att['weight'] > 0:
-                return {'arrowhead': 'normal'}
+                return {'arrowhead': 'normal', 'weight': weight}
             else:
-                return {'arrowhead': 'diamond'}
+                return {'arrowhead': 'diamond', 'weight': weight}
         graph = nx.DiGraph()
         graph.add_nodes_from([(n, node_to_style(n, att))
             for n, att in self._graph.nodes_iter(data = True)])

@@ -13,7 +13,7 @@ fw.add_attack(C, A)
 fw.add_undercut(E, (C, A))
 fw.add_undercut(D, (C, A), weight = -1)
 fw.add_attack(F, E)
-#fw.add_support(G, A)
+fw.add_support(G, A)
 
 fw.write_dot("hello.dot")
 
