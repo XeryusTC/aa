@@ -37,8 +37,39 @@
 \end{frame}
 
 \section{Our approach}
+\subsection{Argumentation Framework}
+\begin{frame}
+    \frametitle{Argumentation Framework}
+    \begin{columns}
+        \column{.6\textwidth}
+        \begin{itemize}
+            \item Argument relations:
+                \begin{itemize}
+                    \item Attack
+                    \item Support
+                    \item Undercut
+                \end{itemize}
+            \item Groundedness:
+                \begin{itemize}
+                    \item No attacks
+                    \item More support than attack
+                \end{itemize}
+        \end{itemize}
+        \column{.4\textwidth}
+        \includegraphics[width=\textwidth]{framework.png}
+    \end{columns}
+\end{frame}
+
+\subsection{Scheduling}
 \begin{frame}
 	\frametitle{Our approach}
+        \begin{itemize}
+            \item Go over all available rooms and times
+            \item Agents (``Lecturers'') make claim if course fit
+            \item Agents support their arguments, undercut others
+            \item Continues until no new arguments are made
+            \item Claim that is grounded at the end wins
+        \end{itemize}
 \end{frame}
 
 \subsection{Types of arguments to use}
@@ -51,20 +82,10 @@
 	\end{enumerate}
 \end{frame}
 
-\subsection{Ways of making an argument}
-\begin{frame}
-	\frametitle{Ways of making an argument}
-	\begin{enumerate}
-		\item Claim
-		\item Undercut
-		\item Support
-	\end{enumerate}
-\end{frame}
-
 \subsection{Data input}
 \begin{frame}
 	\frametitle{Data input}
-	\center
+	\center{}
 	\includegraphics[width=0.2\textwidth]{Rooms.png}%
 	\includegraphics[width=0.365\textwidth]{Teachers.png}
 \end{frame}
@@ -77,6 +98,10 @@
 \section{Relevance}
 \begin{frame}
 	\frametitle{Relevance}
+        \begin{itemize}[<+->]
+            \item Generalized for resource negotiation in MAS
+            \item Extract reasons for room allocation
+        \end{itemize}
 \end{frame}
 
 \frame{\frametitle{Questions?}}
