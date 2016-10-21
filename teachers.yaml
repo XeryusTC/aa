@@ -1,4 +1,52 @@
 teachers:
+    - name: 'Marieke van Vugt'
+      courses:
+          - name: 'Research Methods'
+            students: 132
+            lectures: 3
+            beamer: 1
+          - name: 'Neurophysics'
+            students: 78
+            lectures: 2
+            beamer: 1
+          - name: 'Formal Models of Cognition'
+            students: 19
+            lectures: 2
+            beamer: 1
+          - name: 'Computational Cognitive Neuroscience'
+            students: 12
+            lectures: 2
+            beamer: 1
+      preferences:
+          - room: 105
+            weight: 0.9
+          - room: 151
+            weight: 0.1
+          - room: 253
+            weight: 0.65
+          - room: 280
+            weight: 0.6
+    - name: 'Nicolai Petkov'
+      courses:
+          - name: 'Introduction Intelligent Systems'
+            students: 92
+            lectures: 2
+            beamer: 1
+          - name: 'Parallel Computing'
+            students: 73
+            lectures: 2
+            beamer: 1
+          - name: 'Pattern Recognition'
+            students: 102
+            lectures: 3
+            beamer: 0
+      preferences:
+          - room: 151
+            weight: 0.3
+          - room: 253
+            weight: 0.8
+          - room: 267
+            weight: 0.7
     - name: 'Arnold Meijster'
       courses: 
       - name: 'Imperatief Programmeren'
