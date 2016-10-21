@@ -1,6 +1,7 @@
 from argument.argument import RenameError
 import networkx as nx
 import networkx.drawing.nx_pydot as pydot
+from pydotplus import graphviz
 
 class ArgumentationFramework(object):
     def __init__(self):
@@ -26,7 +27,7 @@ class ArgumentationFramework(object):
             return inner[0]
 
     def _get_argument_from_inner(self, inner):
-        return self._get_node_argument([pred 
+        return self._get_node_argument([pred
             for pred, _, d in self._graph.in_edges(inner, data = True)
                 if d['type'] == "inner"][0])
 
@@ -71,7 +72,7 @@ class ArgumentationFramework(object):
                 for inner in self._graph.successors_iter(arg):
                     for arg_name in self._graph.successors_iter(inner):
                         ground_att = [self.is_grounded(att)
-                                        for att in 
+                                        for att in
                                         self.get_attacks_and_support(
                                             self._get_node_argument(arg_name))]
                         if all([att != None for att in ground_att]):
@@ -118,7 +119,7 @@ class ArgumentationFramework(object):
         if inn:
             if not self.has_argument(arg):
                 self.add_argument(arg)
-            self._graph.add_edge(arg.get_name(), inn, 
+            self._graph.add_edge(arg.get_name(), inn,
                     type = "undercut", weight = -weight)
             self._update(args[1].get_name())
 
@@ -183,13 +184,13 @@ class ArgumentationFramework(object):
     def is_undercut(self, arg1, arg2):
         inn = self._get_inner_node(arg1.get_name(), arg2.get_name())
         if inn:
-            undercutters = [und 
+            undercutters = [und
                             for und, _, d in self._graph.in_edges(inn, data = True)
                             if d['type'] != 'inner' and self._is_node_grounded(und)]
             if len(undercutters) == 0:
                 return False
             else:
-                return sum([self._graph[und][inn]['weight'] 
+                return sum([self._graph[und][inn]['weight']
                             for und in undercutters]) <= 0
         return False
 
@@ -221,7 +222,7 @@ class ArgumentationFramework(object):
 
     def get_grounded(self):
         return [d['argument'] for n, d in self._graph.nodes_iter(data = True)
-                                if 'argument' in d and 
+                                if 'argument' in d and
                                     self._is_node_grounded(n)]
 
     def get_attacks_and_support(self, argument = None, grounded = False):
@@ -240,12 +241,12 @@ class ArgumentationFramework(object):
             return ret
 
     def get_attacks(self, argument = None, grounded = False):
-        return [(att, arg) 
+        return [(att, arg)
                 for att, arg in self.get_attacks_and_support(argument, grounded)
                 if self._get_weight(att.get_name(), arg.get_name()) <= 0]
 
     def get_supports(self, argument = None, grounded = False):
-        return [(att, arg) 
+        return [(att, arg)
                 for att, arg in self.get_attacks_and_support(argument, grounded)
                 if self._get_weight(att.get_name(), arg.get_name()) > 0]
 
@@ -256,8 +257,8 @@ class ArgumentationFramework(object):
         def node_to_style(node, att):
             if att == {}:
                 pred = [pred for _, pred in self._graph.out_edges(node)][0]
-                return {'style': 'filled', 
-                        'shape': 'point', 
+                return {'style': 'filled',
+                        'shape': 'point',
                         'width': 0.01}
             else:
                 return {'fillcolor': 'green' if att['grounded'] else 'red',
@@ -272,8 +273,30 @@ class ArgumentationFramework(object):
             else:
                 return {'arrowhead': 'diamond', 'weight': weight}
         graph = nx.DiGraph()
-        graph.add_nodes_from([(n, node_to_style(n, att))
-            for n, att in self._graph.nodes_iter(data = True)])
-        graph.add_edges_from([(u, v, edge_to_style(u, v, att))
-            for u, v, att in self._graph.edges_iter(data = True)])
+
+        # Add nodes with the argument as text
+        nodes = []
+        for n, att in self._graph.nodes_iter(data = True):
+            if 'argument' in att.keys():
+                node = (graphviz.quote_if_necessary(str(att['argument'])), node_to_style(n, att))
+            else:
+                node = (n, node_to_style(n, att))
+            nodes.append(node)
+        graph.add_nodes_from(nodes)
+
+        # Create the edges from the nodes with names
+        edges = []
+        for u, v, att in self._graph.edges_iter(data=True):
+            print(u, v, att)
+            if 'argument' in self._graph.node[u].keys():
+                uname = graphviz.quote_if_necessary(str(self._graph.node[u]['argument']))
+            else:
+                uname = u
+            if 'argument' in self._graph.node[v].keys():
+                vname = graphviz.quote_if_necessary(str(self._graph.node[v]['argument']))
+            else:
+                vname = v
+            edge = (uname, vname, edge_to_style(u, v, att))
+            edges.append(edge)
+        graph.add_edges_from(edges)
         pydot.write_dot(graph, path)

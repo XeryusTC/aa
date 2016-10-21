@@ -24,8 +24,8 @@ class Room:
         self.day = day
 
     def __str__(self):
-        return '{} (seats {}|beamers {}) {:0>2}:00:00-{:0>2}:00:00'.format(
-                self.name, self.size, self.beamer, self.start_time, self.end_time)
+        return '{} {} (seats {}|beamers {}) {:0>2}:00:00-{:0>2}:00:00'.format(
+            self.day, self.name, self.size, self.beamer, self.start_time, self.end_time)
 
     def get_size(self):
         return self.size
