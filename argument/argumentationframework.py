@@ -1,4 +1,9 @@
 from argument.argument import RenameError
+from argument.sizeargument import SizeArgument
+from argument.beamerargument import BeamerArgument
+from argument.roompreferenceargument import RoomPreferenceArgument
+from argument.argument import Counter
+from argument.claim import Claim
 import networkx as nx
 import networkx.drawing.nx_pydot as pydot
 from pydotplus import graphviz
@@ -253,6 +258,24 @@ class ArgumentationFramework(object):
     def size(self):
         return self._size
 
+    def readable_argument_name(self, argument):
+        owner = argument.owner.name
+        if isinstance(argument, Claim):
+            out = "CLAIM {name} by {owner}".format(name=argument.get_name(),
+                owner=owner)
+        elif isinstance(argument, SizeArgument):
+            out = "SIZE by {owner} required {req}".format(owner=owner,
+                req=argument.size)
+        elif isinstance(argument, BeamerArgument):
+            out = "BEAMER by {owner} required {beamer}".format(owner=owner,
+                beamer=argument.beamer)
+        elif isinstance(argument, RoomPreferenceArgument):
+            out = "PREF by {owner} strength {pref}".format(owner=owner,
+                pref=argument.room_preference)
+        else:
+            out = str(argument)
+        return graphviz.quote_if_necessary(out)
+
     def write_dot(self, path):
         def node_to_style(node, att):
             if att == {}:
@@ -278,7 +301,7 @@ class ArgumentationFramework(object):
         nodes = []
         for n, att in self._graph.nodes_iter(data = True):
             if 'argument' in att.keys():
-                node = (graphviz.quote_if_necessary(str(att['argument'])), node_to_style(n, att))
+                node = (self.readable_argument_name(att['argument']), node_to_style(n, att))
             else:
                 node = (n, node_to_style(n, att))
             nodes.append(node)
@@ -287,13 +310,12 @@ class ArgumentationFramework(object):
         # Create the edges from the nodes with names
         edges = []
         for u, v, att in self._graph.edges_iter(data=True):
-            print(u, v, att)
             if 'argument' in self._graph.node[u].keys():
-                uname = graphviz.quote_if_necessary(str(self._graph.node[u]['argument']))
+                uname = self.readable_argument_name(self._graph.node[u]['argument'])
             else:
                 uname = u
             if 'argument' in self._graph.node[v].keys():
-                vname = graphviz.quote_if_necessary(str(self._graph.node[v]['argument']))
+                vname = self.readable_argument_name(self._graph.node[v]['argument'])
             else:
                 vname = v
             edge = (uname, vname, edge_to_style(u, v, att))
