@@ -8,3 +8,4 @@ pyparsing==2.1.9
 python-dateutil==2.5.3
 PyYAML==3.12
 six==1.10.0
+Unipath==1.1

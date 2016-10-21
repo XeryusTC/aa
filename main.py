@@ -1,5 +1,9 @@
 import random
 from datetime import datetime
+from unipath import Path
+import networkx.drawing.nx_pydot
+from pydotplus import graphviz
+import sys
 
 import rooms
 import agent
@@ -11,7 +15,17 @@ class Support:
     def __init__(self):
         self.bullshit = []
 
-def debateRoom(targetRoom, agents):
+
+def write_graph_as_image(path, filename, fw):
+    if '--write-image' not in sys.argv:
+        return
+    path.mkdir(True)
+    out = path.child(str(filename))
+    fw.write_dot(out + '.dot')
+    g = graphviz.graph_from_dot_file(out + '.dot')
+    g.write_png(out + '.png')
+
+def debateRoom(targetRoom, agents, room_path):
     interestedAgents = []
     claims = []
     fw = ArgumentationFramework()
@@ -33,8 +47,10 @@ def debateRoom(targetRoom, agents):
         for claim2 in claims:
             if claim1 != claim2:
                 fw.add_attack(claim1, claim2)
+    write_graph_as_image(room_path, 'claims', fw)
 
     new_arguments = True
+    i = 0
     while new_arguments:
         new_arguments = False
         for agent in interestedAgents:
@@ -51,6 +67,8 @@ def debateRoom(targetRoom, agents):
                     fw.add_undercut(counter.attacker, counter.attackee)
             print("")
         winning = [claim for claim in claims if fw.is_grounded(claim)]
+        write_graph_as_image(room_path, i, fw)
+        i += 1
 
     if winning:
         winner = random.choice(winning).owner # TODO: some better method of picking winner
@@ -101,6 +119,7 @@ def print_not_scheduled(agents):
 if __name__ == '__main__':
     rooms = rooms.load_rooms('locations.yaml')
     teachers = agent.load_agents('teachers.yaml')
+    out_path = Path('/tmp/arguingagents/' + str(datetime.now()))
 
     print("===Teachers===")
     for teacher in teachers:
@@ -118,7 +137,10 @@ if __name__ == '__main__':
 
     for room in rooms:
         print("Debating room:", room)
-        course, agent = debateRoom(room, teachers)
+        room_path = out_path.child('{}.{}.{}-{}'.format(room.day, room.name,
+            room.start_time, room.end_time))
+        room_path.mkdir(True)
+        course, agent = debateRoom(room, teachers, room_path)
         print("Winning course:", course)
         if course:
             schedule.add(room, course, agent)
