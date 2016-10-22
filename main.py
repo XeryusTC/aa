@@ -139,7 +139,6 @@ if __name__ == '__main__':
         print("Debating room:", room)
         room_path = out_path.child('{}.{}.{}-{}'.format(room.day, room.name,
             room.start_time, room.end_time))
-        room_path.mkdir(True)
         course, agent = debateRoom(room, teachers, room_path)
         print("Winning course:", course)
         if course:
