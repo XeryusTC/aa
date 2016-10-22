@@ -1,7 +1,5 @@
 \documentclass{beamer}
 
-\usepackage{graphicx}
-
 \title{An argumentation based solution to making schedules}
 \author{Pim van der Meulen \and Ren\'e Mellema \and Xeryus Stokkel}
 \date{October 24, 2016}
@@ -20,22 +18,39 @@
 \end{frame}
 
 \section{State of the art}
+\subsection{Syllabus Plus}
 \begin{frame}
 	\frametitle{Syllabus Plus}
 	\begin{columns}%[c] % the "c" option specifies center vertical alignment
-    \column{.8\textwidth} % column designated by a command
-    \begin{enumerate}
-		\item Used by colleges and universities all over the world, including the University of Groningen
+    \column{.4\textwidth} % column designated by a command
+    \begin{itemize}
+		\item Used by many colleges/universities
 		\item Constraint satisfaction problem solver:
-		\begin{enumerate}
-			\item Constraints
+		\begin{itemize}
+			\item Constraints 
 			\item Rules
 			\item Preferences
-		\end{enumerate}
-	\end{enumerate}
-    \column{.2\textwidth}
+		\end{itemize}
+	\end{itemize}
+    \column{.6\textwidth}
     \includegraphics[width=\textwidth]{SyllabusPlus.png}
     \end{columns}	
+\end{frame}
+
+\begin{frame}
+    \includegraphics[width=0.9\textwidth]{SyllabusPlusFlow.png}
+\end{frame}
+
+\subsection{Arguing and scheduling}
+\begin{frame}
+\begin{itemize}
+\item Kuo et al. (2011)
+\item Agents propose own schedule
+\item Calculate utilities for each proposal
+\item Calculate risk based on utility
+\item 
+
+\end{itemize}
 \end{frame}
 
 \section{Our approach}
@@ -64,7 +79,7 @@
 
 \subsection{Scheduling}
 \begin{frame}
-	\frametitle{Our approach}
+	\frametitle{Scheduling}
         \begin{itemize}
             \item Go over all available rooms and times
             \item Agents (``Lecturers'') make claim if course fit
