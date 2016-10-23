@@ -11,7 +11,7 @@ teachers:
             beamer: 1
           - name: 'Formal Models of Cognition'
             students: 19
-            lectures: 2
+            lectures: 3
             beamer: 1
           - name: 'Computational Cognitive Neuroscience'
             students: 12
@@ -51,7 +51,7 @@ teachers:
       courses: 
       - name: 'Imperatief Programmeren'
         students: 280
-        lectures: 2
+        lectures: 3
         beamer: 1
       - name: 'Functional Programming'
         students: 99
@@ -71,11 +71,11 @@ teachers:
         beamer: 1
       - name: 'Computer Architecture'
         students: 44
-        lectures: 1
+        lectures: 2
         beamer: 1
       - name: 'Operating Systems'
         students: 81
-        lectures: 1
+        lectures: 3
         beamer: 1
       - name: 'Program Correctness'
         students: 81
@@ -104,7 +104,7 @@ teachers:
       courses:
       - name: 'Multi Agent Systems'
         students: 50
-        lectures: 2
+        lectures: 3
         beamer: 1
       - name: 'Introduction to Logic'
         students: 105
@@ -116,7 +116,7 @@ teachers:
         beamer: 1
       - name: 'Advanced Logic'
         students: 87
-        lectures: 2
+        lectures: 3
         beamer: 0
       - name: 'Logica en Argumentatietheorie'
         students: 24
@@ -149,7 +149,7 @@ teachers:
         beamer: 1
       - name: 'Knowledge and Agent Technology'
         students: 96
-        lectures: 1
+        lectures: 2
         beamer: 1
       preferences:
       - room: 105
@@ -174,7 +174,7 @@ teachers:
       courses:
           - name: 'Handwriting Recognition'
             students: 22
-            lectures: 1
+            lectures: 4
             beamer: 1
       preferences:
       - room: 105
@@ -199,11 +199,11 @@ teachers:
       courses:
           - name: 'Machine Learning'
             students: 60
-            lectures: 1
+            lectures: 2
             beamer: 1
           - name: 'Cognitive Robotics'
             students: 24
-            lectures: 1
+            lectures: 3
             beamer: 1
       preferences:
       - room: 105
