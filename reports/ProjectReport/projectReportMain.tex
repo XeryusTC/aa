@@ -1,6 +1,6 @@
 \documentclass[a4paper]{article}
+\usepackage{bnaic}
 \usepackage{latexsym}
-\usepackage[a4paper]{geometry}
 \usepackage{color}
 \usepackage{listings}
 \usepackage[pdftex]{graphicx}
@@ -13,7 +13,6 @@
 \definecolor{LightGray}{rgb}{0.6,0.6,0.6}
 \definecolor{DarkGray}{rgb}{0.3,0.3,0.3}
 \lstset{language=Python,
-   keywords={function,uint8,uint16,uint32,double,break,case,catch,continue,else,elseif,end,for,global,if,otherwise,persistent,return,switch,try,while},
    basicstyle=\ttfamily\small,
    breaklines=true,
    keywordstyle=\bfseries\color{Blue},
@@ -45,12 +44,19 @@
 \newcommand{\code}[1]{\textnormal{\texttt{#1}}}
 
 
-\title{\textsf{Arguing Agents :} Project Report}
-\author{Pim van der Meulen \\Ren\'e Mellema \\Xeryus Stokkel}
-\date{\today}
+\title{\textbf{\huge Arguing Agents\\An argumentation based solution to
+        scheduling}}
+\author{Pim van der Meulen\and Ren\'e Mellema \and Xeryus Stokkel}
+\date{\textit{Institute of Artificial Intelligence, University of
+        Groningen}}
 
 \begin{document}
-\maketitle
+\ttl{}
+\thispagestyle{empty}
+
+\begin{abstract}
+    \noindent
+\end{abstract}
 
 %Section 1: Introduction
 \input{introduction.tex}
