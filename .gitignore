@@ -1,3 +1,7 @@
+# Ignore the reports
+reports/presentation/presentation.pdf
+reports/ProjectReport/projectReportMain.pdf
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
