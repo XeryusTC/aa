@@ -7,5 +7,48 @@ to make the arguments seem more natural, it is extended to also work for
 support and undercuts. This method was chosen, because it was easy to
 compute, but gave a powerful and easy to use interface.
 
+Like in~\cite{dungargfund}, the basis for the framework is a graph, where
+attack and support relations are given by the edges and the arguments
+themselves are the nodes. The undercutting attacks go from arguments to
+edges.\footnote{Because the graph library in Python that we used did not
+    allow for edges that went to edges, a structural node was inserted in
+    each attack and support relation} 
+In the current framework it is only
+possible to undercut attack and support relations, not undercutting
+relations themselves. This is because of limitations of the current
+implementation, not of the theoretical framework. Each relation also has a
+weight, or a strength, which for supporting relationships is positive and
+for attacking relationships is negative.
+
+Because we also included support and undercutting, the grounded semantics
+were extended to account for this.
+\begin{defn}
+    An argument is grounded iff
+    \begin{enumerate}
+        \item It is not attacked by a grounded argument that is not
+            undercut, or
+        \item The sum of the weights of the grounded, not undercut attack
+            and support relations is larger than 0
+    \end{enumerate}
+\end{defn}
+
+In simpler terms, this means that an argument is grounded if it has no
+attacks, of if it has more support than attacks. The first clause is needed
+to make sure that arguments that are not attacked are grounded. If these
+arguments would not be grounded, then they do not count to determining if
+the arguments they have outgoing relations to are grounded. This means that these
+arguments do not have incoming attack or support relations. Therefore they
+do not have more support than attacks and are not grounded either, meaning
+that no argument is grounded. 
+
+We now also need a definition for undercut, since this is important for our
+definition of grounded.
+\begin{defn}
+    An attack or support relation is undercut iff the sum of the weights of the
+    undercutting relations coming from grounded arguments is equal to or
+    lower than 0.
+\end{defn}
+
+
 \subsection{Scheduling}
 
