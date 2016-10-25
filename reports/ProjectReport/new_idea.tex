@@ -51,4 +51,83 @@ definition of grounded.
 
 
 \subsection{Scheduling}
+To create a schedule we need several pieces of information. We need to know
+which rooms are available and how many students they can seat. Most courses
+require a beamer while some others do not, so we also keep track of whether
+there is a beamer in the room. Next we need to know the various timeslots that
+each course will occupy. So a several start times and end times are given to
+create blocks in which the courses will take place, these time slots are always
+as shown in \autoref{tbl:timeslots}.
+
+The final information we require is what courses the lecturers teach. For each
+course we keep track of who teaches the course, how many students there are who
+follow the courses, whether the course requires the use of a beamer, and how
+many lectures need to be scheduled for that course. In addition to this we also
+want to know the room preferences of the teachers. For this we use a number
+between 0 and 1, where 0 represents that the teacher never wants to teach in
+that room while 1 represents that the teacher loves the room and always wants to
+teach there if he has the opportunity.
+
+To successfully create a schedule these elements need to be combined in a way
+that does not create any conflicts. In this case conflicts would be when a
+teacher has to teach at two different places at the same time, multiple lectures
+take place in the same room at the same time, there are more students than there
+are seats in a room, or a room is unfit for the course because there is no
+beamer in it while it is required.
+
+To create the conflict free schedule we first create a $|R| \times |T| \times
+5$ matrix, where $R$ is the set of rooms, $T$ is the set of available time
+slots (see \autoref{tbl:timeslots}). The constant 5 comes from the number of
+days we want to schedule for, in this case the days Monday through Friday. Next
+we pick a random time, room and day combination from the matrix and ask each
+lecturer agent if it is interested in teaching a course at this moment. The
+agent decides if this is the case based on its availability, so if it is
+occupied with teaching another course at that point in time then it is clearly
+not able to teach at that moment as well. The agent will also check whether it
+teaches a course that will fit in the room, if all courses that an agent teaches
+have more students enrolled than there are seats in the room then the agent is
+also not interested. After asking all agents an argument framework is created
+for this room, all interested agents make a starting argument which we call a
+claim. These claims start by attacking each other. Each agent determines for
+itself what course it wants to start arguing for, they will always pick the
+course with the most students that fits in the room that still has unscheduled
+lectures.
+
+The argument takes place over the course of several iterations. Each iteration
+we ask each agent if they want to make an argument based on the current state of
+the argumentation framework. Agents will support their own claim by making a
+support argument. These support arguments can be one of a few types. The first
+type is the size argument, in this case an agent makes the argument that the
+class that they want to schedule has a certain number of students. The second
+type is a beamer argument, where agents will say that they require a beamer or
+not. The third type is an agent's preference for the room. After making initial
+arguments agents are also allowed to start attacking and undercutting each
+other's arguments. Agents will always undercut each others arguments if they
+make the same argument, i.e. when the number of students in their course is the
+same or they both require a beamer. When the agent has a better argument, like
+their class being larger, than another agent it will also undercut the argument.
+
+This process continues until no more arguments have been made. At this point we
+calculate the grounded set of the argumentation framework. Often this will
+result in just one claim being in the grounded set. The agent who made this
+claim gets to schedule the course that they made the claim for. So this
+particular room/time/day combination is now scheduled and won't be discussed
+again. The winning agent keeps track of which courses have had lectures
+scheduled so that they will not schedules more lectures than necessary for each
+course. If there are multiple claims in the grounded set then the winner is
+picked at random between these claims. When this happens it means that all
+agents made equal arguments so there is no clear winner.
+
+\begin{table}
+	\centering
+	\caption{Overview of the time slots that courses can be planned in.}
+	\label{tbl:timeslots}
+	\begin{tabular}{l|l|l}
+		& Start time & End time \\ \hline
+		Block 1 & 09:00 & 11:00 \\
+		Block 2 & 11:00 & 13:00 \\
+		Block 3 & 13:00 & 15:00 \\
+		Block 4 & 15:00 & 17:00
+	\end{tabular}
+\end{table}
 
