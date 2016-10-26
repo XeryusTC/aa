@@ -22,7 +22,7 @@ for attacking relationships is negative.
 
 Because we also included support and undercutting, the grounded semantics
 were extended to account for this.
-\begin{defn}
+\begin{defn}\label{def:grounded}
     An argument is grounded iff
     \begin{enumerate}
         \item It is not attacked by a grounded argument that is not
@@ -43,12 +43,23 @@ that no argument is grounded.
 
 We now also need a definition for undercut, since this is important for our
 definition of grounded.
-\begin{defn}
+\begin{defn}\label{def:undercut}
     An attack or support relation is undercut iff the sum of the weights of the
     undercutting relations coming from grounded arguments is equal to or
     lower than 0.
 \end{defn}
 
+Now, to calculate whether an argument is grounded, you start with all the
+arguments which have no incoming relations. These arguments are grounded by
+definition. Then you go to the arguments that these arguments have
+outgoing relations to. If for all the incoming relations for these
+arguments it has been decided if they are grounded or not, use 
+Definition~\ref{def:grounded} to determine if this argument is grounded. If
+it has more grounded incoming, not undercut support relations than incoming
+attack relations, then it is also grounded. Repeat with the outgoing
+relations for the arguments that are now determined until done. It is also
+possible to use a labelling approach where the labels are updated as
+arguments and relations are added.
 
 \subsection{Scheduling}
 To create a schedule we need several pieces of information. We need to know
@@ -103,7 +114,7 @@ type is a beamer argument, where agents will say that they require a beamer or
 not. The third type is an agent's preference for the room. After making initial
 arguments agents are also allowed to start attacking and undercutting each
 other's arguments. Agents will always undercut each others arguments if they
-make the same argument, i.e. when the number of students in their course is the
+make the same argument, i.e.\ when the number of students in their course is the
 same or they both require a beamer. When the agent has a better argument, like
 their class being larger, than another agent it will also undercut the argument.
 
