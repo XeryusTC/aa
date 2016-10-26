@@ -1,0 +1,35 @@
+\section{Discussion}
+To create the schedule we randomly pick rooms from the timetable and let agents
+argue about who gets to lecture at that time slot. The random nature has several
+implications for the way that the schedule is constructed. The lecture that wins
+is not always a lecture that fits well into that room, it is possible that a
+course with 20 students is placed in a 120 seat room because the lecturer was
+the only agent that was interested in that time slot. This means that the
+lecturer will teach a course to a mainly empty room, something which can be
+quite demotivating even if every student shows up. Ideally a course is taught in
+a room that fits best, that is, there should be as few empty seats as possible.
+To enable this the slots should be filled in a more systematic way, the best
+solution would be to start filling the smallest rooms with courses first. This
+way small classes will always be in the smallest possible room where they fit
+since the agents will try to claim whatever room that a course fits in.
+
+Another characteristic of the random scheduling of rooms is that the system is
+less likely to create the best schedule, or that it will even find a complete
+schedule at all, even if it exists. A complete schedule in this case means that
+all lectures that needed to be scheduled are scheduled without any conflicts.
+The random nature allows for an ordering that will lead to scheduling conflicts
+for single agents. If there are two agents, of which agent 1 teaches a 60 people
+class, and agent 2 teaches a 120 people class, and there are two rooms
+available: room 1 seats 80 people while room 2 seats 130 people. Say that we
+schedule for room 2 first and agent 1 is the only grounded claim because that
+agent has a higher preference for that room. It is then impossible to schedule
+the class of agent 2 since the only room available seats only 80 people. So it
+would've been better to schedule agent 1's class in room 1. Unfortunately
+because of the random nature of our scheduling we can have this happen. A more
+systematic approach could solve these kinds of conflicts before they even occur.
+Scheduling the smallest rooms first would solve this. Allowing agents to make
+an argument that the currently discussed room is the minimum size for their
+course will also prevent this from happening, even without needing to change the
+order in which the timetable is filled. The downside of this is that agents need
+to know what size rooms are available, this is information that they currently
+do not possess.
