@@ -1,4 +1,51 @@
 \subsection{State of the Art}
-With regard to scheduling software, Syllabus Plus is said to be used by a large number of colleges and universities around the world, including the University of Groningen \cite{SyllabusPlus}. Syllabus plus is described as an artificial intelligence solution and can be seen as a constraint satisfaction problem solver. The program operates by first taking non-dynamic data, such as teacher stuff, room stuff, building stuff, called foundation data. On top of this dynamic data is loaded such as student enrollments and course requirements. Data is refined and loaded into problem solver. This solver iterates over the different soft constraints, hard constraint and preferences and adjusts stuff until a set amount of constraints are satisfied and a working schedule is outputted.  
+We looked into the state of the art of scheduling software and found that 
+Syllabus Plus, a product developed by Scientia, is used by a large number 
+of colleges and universities around the world, including the University of 
+Groningen \cite{SyllabusPlus}. Syllabus Plus is described as an artificial 
+intelligence solution, with its implementation resembling a constraint 
+satisfaction problem solver. The program operates by collection available 
+data, which consists of foundation and student data. The former contains 
+non-dynamic information about teacher staff and locations, while the latter 
+involves dynamic data, such as student enrollments and course requirements. 
+After a refinement phase for all data is performed, the program iterates 
+through constraint reduction cycles, in which the hard constraints, soft 
+constraints, rules and preferences are adjusted to some degree, until the 
+stop criteria of the program are reached. The result is a working schedule 
+that satisfies the target constraints.
 
-The state of the art for using argumentation in the scheduling process is described in a paper by \cite{Kuo:jc}. Here an algorithm is proposed that takes the teacher as agents and lets them argue over stuff. Every agent is created with beliefs and preferences. Based on this a set number of proposals are generated per agent, with proposals being certain elements of the schedule. Every agent calculates an utility value based on its preferences for every proposal (so also proposals created by other agents), and choses the proposal with the highest utility. The negotiation phase is now started, in which every agent will present its selected proposal. If there is a concensus about a particular proposal, the algorithm is finished for this round. If there is no concensus, the agent with the lowest risk value, which is based on how much utility is lost conceding, will concede and the argumentation phase is started. Here, the conceding agent will argue with the agent with the lowest risk value  that it hasent argued before in this round yet. Based on their beliefs and differences their on, the agents will created arguments trying to change each other\'s beliefs. Based on the outcome of this, particular beliefs for the respective agents will be updated in the belief evaluation phase. Afterwards, algorithm will go back into the negotiation phase. The entire process will continue untill consensus is reached during a negotiation phase.
+The state of the art for using argumentation in the scheduling process is 
+described in a paper by \cite{Kuo:jc}. Here, a course-scheduling 
+negotiating system is presented in which agents, who are representing 
+teachers, are involved in the scheduling process. This involvement consists 
+of negotiating and arguing with other agents, in order to reach a consensus 
+about a particular room allocation or to change an agent's belief. Apart 
+from beliefs, agents also posses individual preferences, to which a number 
+of proposals are generated for every agent during the proposal generator 
+phase of the algorithm. Proposals are abstract, but can for example take 
+the form of agent \textit{A} claiming room \textit{1} for course 
+\textit{alpha} on time slot \textit{X}. Next, during the negotiation phase, 
+every agent selects its most effective proposal out of the total list, by 
+calculating an utility value for all proposals and selecting the best 
+scoring option. The utility value is based on particular preferences for 
+issues belonging to a given proposal. Every agent will then present their 
+favorite proposal and will try to negotiate with other agents in order to 
+reach a consensus about a single proposal. If such a consensus is indeed 
+reached, the scheduling process is completed for the rooms, courses and 
+agents involved in the proposal. If however no consensus is reached, the 
+agent with the lowest so-called risk value is selected to concede. This 
+risk value is evaluated for every agent by taking the utility value of the 
+proposal chosen by agent minus the maximal cost of conceding ones own 
+proposal in favor of that of another. If there are no more proposals to be 
+selected that have not been used during the negotiation phase this round, 
+the argumentation phase is started. Else, the conceding agent is prompted 
+to select an available proposal and resume the negotiation phase. In the 
+argumentation phase, the conceding agent chooses the agent with the lowest 
+risk value (itself excluded) to pass to and fro arguments with. 
+
+ Based on their beliefs and differences their on, 
+the agents will created arguments trying to change each other\'s beliefs. 
+Based on the outcome of this, particular beliefs for the respective agents 
+will be updated in the belief evaluation phase. Afterwards, algorithm will 
+go back into the negotiation phase. The entire process will continue until 
+consensus is reached during a negotiation phase.
