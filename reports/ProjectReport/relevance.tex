@@ -1,4 +1,23 @@
 \section{Discussion}
+Our system is able to construct a conflict free schedule, proving that our
+approach to scheduling is a viable one. Furthermore, it is currently
+possible for a human to look at the end state of the argumentation
+framework and see why a certain agent got the room allocated, meaning it is
+possible to now give a reasoning for why the schedule is the way it is.
+This was one of the problems we wanted to solve.
+
+The fact that the system was not able to schedule all lectures probably
+follows from the fact that we do not have a lot of rooms, being able to
+only schedule three parallel lectures, while in a real scenario there are a
+lot more rooms available, mostly for smaller groups. If we were to include
+these rooms as well, more lectures should be able to fit into the schedule
+without problems.
+
+Another explanation is that we over scheduled lecturers in that with our
+current inputs, they give more courses than they normally would in a
+semester. Because of this, the lecturers spend a lot of their time on
+teaching courses, making it harder for them to fit new courses in. 
+
 To create the schedule we randomly pick rooms from the timetable and let agents
 argue about who gets to lecture at that time slot. The random nature has several
 implications for the way that the schedule is constructed. The lecture that wins
@@ -49,6 +68,30 @@ possible constraints that commercial packages have, if these constraints were to
 be added it may well be that our time to find a solution will likely increase
 exponentially.
 
+Another problem with our current system is that it can schedule lectures
+for the same group of students but for different courses and with
+different lecturers and the same time. This is because it currently does
+not take which students attend which lectures into account. We propose two
+methods of solving this. The first would be to make sure that lecturers
+cannot make a claim for a course in a time slot if in the same time slot a
+course which the same students need to attend is already allocated. Since
+the rooms and scheduled after one another, this would remove that problem,
+and this would work particularly well for programmes with a lot of
+compulsory courses. 
+
+A problem with this approach is that in real life lectures tend to overlap,
+even for the same groups of students if there are a lot of optional courses
+which cater to different groups of students. An approach that would work
+well to solve this problem is to give claims for courses of which the
+students already have another course a disadvantage by adding an attack
+relation to these claims. Then they would need more support than otherwise
+necessary in order to win that round. Seeing as both of these two
+approaches have their own drawbacks in different scenarios, a combination
+of the two might also solve the problem.  In this case the first approach
+would be used if a compulsory course is scheduled or made a claim for and
+the second case is used if the courses are optional. This would mimic the
+current behaviour of allowing overlap if the courses are optional.
+
 \subsection{Relevance}
 Our method of reserving rooms at certain times can be generalized to a method to
 schedule the use of resources. Rooms can be swapped out for any other resource.
@@ -58,3 +101,24 @@ different scientific teams have. Finding a good schedule that satisfies these
 constraints is a hard problem that has historically been tackled by CSP solvers
 \cite{johnston1994spike}, just like the course scheduling problem. An agent
 based approach like ours could also be used to tackle this scheduling task.
+
+\subsection{Future research}
+An interesting future direction of research is checking if people prefer
+the schedules generated using our new system instead of the old constraint
+satisfaction problem way. This could be done by feeding both systems
+the same information and then asking lecturers to specify which schedule
+they prefer. In order to make it even more interesting, it would also be
+possible to provide an explanation for why certain lectures are scheduled
+the way they are, and see if this improves peoples appreciation of the
+schedules.
+
+Another interesting area of research would be to see if the new method
+could be used for general resource allocation instead of just for
+scheduling. This could help in multi agent systems where multiple agents
+want to use the same resource, for example a door or a hallway, but where
+it is hard to find a reasonable way to give an utility for the use of the
+resource. In this case, the agents could argue for why they need to use the
+resource, without having to know why the other agent needs to use it, since
+they will learn this during the process of argumentation. It also means
+that the argumentation can happen locally, since only the agents that want
+to use the resource at that time need to be involved.

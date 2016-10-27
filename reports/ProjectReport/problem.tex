@@ -1,10 +1,49 @@
 \section{Introduction}
-It is 8:43 am. The combination of early-morning coffee and a constant breeze of cold air keeps you away from the sweet slumber you had an hour ago. While you zig-zag effortlessly between the seemingly infinite stream of fellow bicycle-riders, you ponder why in the first place you would have a lecture planned on friday, nine o'clock. You manage to barely make it on time. Entering the room, you can see that the majority of people have already arrived, more or less awake. After turning on the beamer and connecting your laptop, you start facing the crowd. "Good morning everyone!"    
+It is 8:43 am. The combination of early-morning coffee and a constant
+breeze of cold air keeps you away from the sweet slumber you had an hour
+ago. While you zigzag effortlessly between the seemingly infinite stream
+of fellow bicycle-riders, you ponder why in the first place you would have
+a lecture planned on Friday, nine o'clock. You manage to barely make it on
+time. Entering the room, you can see that the majority of people have
+already arrived, more or less awake. After turning on the beamer and
+connecting your laptop, you start facing the crowd. ``Good morning
+everyone!''
 
-Timetable schedules can be met with occasional criticisms from its intended audience. This form of feedback is often based on individual preferences and needs, and is usually intended to adjust a schedule to better fit the individual instead of the group. While the concept of arguing about one's own preferences in this scenario might seem selfish, it does provide a way to augment the process of scheduling.
+Timetable schedules can be met with occasional criticisms from its intended
+audience. This form of feedback is often based on individual preferences
+and needs, and is usually intended to adjust a schedule to better fit the
+individual instead of the group. While the concept of arguing about one's
+own preferences in this scenario might seem selfish, it does provide a way
+to augment the process of scheduling.
 
-Room scheduling can be seen as a variant of resource allocation, as it usually pertains to having a selection of time-slots, rooms and courses. These last two each contain limitations and requirements respectively, such as the number of students that can be seated or enrolled or whether a beamer is, or should be present. The problem of room scheduling is to find configurations of rooms for lectures, practicals or meetings in a specific time-frame, where an utility-value based on these limitations and requirements is maximum for all affected agents. This list of agents includes teachers, students and other individuals that are involved in the schedule.            
+Room scheduling can be seen as a variant of resource allocation, as it
+usually pertains to having a selection of time-slots, rooms and courses.
+These last two each contain limitations and requirements respectively, such
+as the number of students that can be seated or enrolled or whether a
+beamer is, or should be present. The problem of room scheduling is to find
+configurations of rooms for lectures, practicals or meetings in a specific
+time-frame, where an utility-value based on these limitations and
+requirements is maximum for all affected agents. This list of agents
+includes teachers, students and other individuals that are involved in the
+schedule.            
 
-The use of agent argumentation could be beneficial to solving the schedule problem, as it helps to put the utility-value of agents into more concrete terms by placing the focus on the individual agent. Agents would be able to argue about each other's preferences and constraints, which incidently should also lead to a reduction of the amount of critizisms on schedules, because one's preferences would now be included in the overall process. 
+The use of agent argumentation could be beneficial to solving the schedule
+problem, as it helps to put the utility-value of agents into more concrete
+terms by placing the focus on the individual agent. Agents would be able to
+argue about each other's preferences and constraints, which incidentally
+should also lead to a reduction of the amount of criticisms on schedules,
+because one's preferences would now be included in the overall process. 
 
-In this report a scheduling solution is presented that uses agent argumentation as basis. Teachers are seen as agents, who have the ability to make claims on rooms and can create attack, support and undercut arguments for or against other claims and arguments. The arguments can be based on the preference-weights of agents, as well as the attributes of agents, courses and rooms. Based on the results of these arguments per room a schedule is constructed that assigns rooms to specific courses for a given time-frame.
+In this paper we present a scheduling solution that utilizes argumentation 
+to resolve conflicts for particular rooms. Teachers are seen as agents, who 
+each have the ability to make a claim on a room and can create attack, 
+support and undercut arguments for or against other claims and arguments. 
+The arguments can be either be based on the preference-weights of agents, 
+or on the attributes of agents, courses and rooms. Based on the outcomes of 
+these debates a schedule is constructed that assigns rooms to specific 
+courses in a given time-frame.
+
+The structure of the article is the following. First we will present the
+current state of the art. This is followed by how our new approach works.
+Then a schedule resulting from our system is presented and discussed. The
+article ends with a discussion and future work.
