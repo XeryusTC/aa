@@ -1,4 +1,23 @@
 \section{Discussion}
+Our system is able to construct a conflict free schedule, proving that our
+approach to scheduling is a viable one. Furthermore, it is currently
+possible for a human to look at the end state of the argumentation
+framework and see why a certain agent got the room allocated, meaning it is
+possible to now give a reasoning for why the schedule is the way it is.
+This was one of the problems we wanted to solve.
+
+The fact that the system was not able to schedule all lectures probably
+follows from the fact that we do not have a lot of rooms, being able to
+only schedule three parallel lectures, while in a real scenario there are a
+lot more rooms available, mostly for smaller groups. If we were to include
+these rooms as well, more lectures should be able to fit into the schedule
+without problems.
+
+Another explanation is that we over scheduled lecturers in that with our
+current inputs, they give more courses than they normally would in a
+semester. Because of this, the lecturers spend a lot of their time on
+teaching courses, making it harder for them to fit new courses in. 
+
 To create the schedule we randomly pick rooms from the timetable and let agents
 argue about who gets to lecture at that time slot. The random nature has several
 implications for the way that the schedule is constructed. The lecture that wins
