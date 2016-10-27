@@ -17,9 +17,17 @@ pip install -r requirements.txt
 
 #Run program 
 ---------------------------------------
+```
 python main.py
+```
+
+To save the pictures of the argumentation framework:
+```
+python main.py --write-image
+```
+
+The images get saved into `/tmp/arguingagents/` in in folder with the time when the program was run. 
 
 #Notes:
-+++++++++++++++++++++++++++++++++++
 Teacher and course information is stored in teachers.yaml. 
 Course information is stored in locations.yaml
