@@ -53,21 +53,6 @@ order in which the timetable is filled. The downside of this is that agents need
 to know what size rooms are available, this is information that they currently
 do not possess.
 
-The agent based approach we proposed allows for a divide-and-conquer approach to
-scheduling problems. CSP solvers have a global overview of the problem and can
-use that to find an optimal complete solution. However it also takes a long time
-while an optimal solution is not always necessary, it is more important that
-there is a working schedule than there is to make the best schedule possible.
-Because we divide the problem into a sub-discussion for each time slot/room
-combination we are able to speed up the process, finding a complete schedule in
-just a few seconds. To do this we sacrifice optimality as discussed above, we
-don't always schedule the best lecture in the best fitting room. Needing only
-several seconds instead of hours gives us a great advantage over CSP solvers.
-Unfortunately our implementation is less complex and can not deal with all
-possible constraints that commercial packages have, if these constraints were to
-be added it may well be that our time to find a solution will likely increase
-exponentially.
-
 Another problem with our current system is that it can schedule lectures
 for the same group of students but for different courses and with
 different lecturers and the same time. This is because it currently does
@@ -91,6 +76,21 @@ of the two might also solve the problem.  In this case the first approach
 would be used if a compulsory course is scheduled or made a claim for and
 the second case is used if the courses are optional. This would mimic the
 current behaviour of allowing overlap if the courses are optional.
+
+The agent based approach we proposed allows for a divide-and-conquer approach to
+scheduling problems. CSP solvers have a global overview of the problem and can
+use that to find an optimal complete solution. However it also takes a long time
+while an optimal solution is not always necessary, it is more important that
+there is a working schedule than there is to make the best schedule possible.
+Because we divide the problem into a sub-discussion for each time slot/room
+combination we are able to speed up the process, finding a complete schedule in
+just a few seconds. To do this we sacrifice optimality as discussed above, we
+don't always schedule the best lecture in the best fitting room. Needing only
+several seconds instead of hours gives us a great advantage over CSP solvers.
+Unfortunately our implementation is less complex and can not deal with all
+possible constraints that commercial packages have, if these constraints were to
+be added it may well be that our time to find a solution will likely increase
+exponentially.
 
 \subsection{Relevance}
 Our method of reserving rooms at certain times can be generalized to a method to
