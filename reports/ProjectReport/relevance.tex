@@ -6,17 +6,11 @@ framework and see why a certain agent got the room allocated, meaning it is
 possible to now give a reasoning for why the schedule is the way it is.
 This was one of the problems we wanted to solve.
 
-The fact that the system was not able to schedule all lectures probably
-follows from the fact that we do not have a lot of rooms, being able to
-only schedule three parallel lectures, while in a real scenario there are a
-lot more rooms available, mostly for smaller groups. If we were to include
-these rooms as well, more lectures should be able to fit into the schedule
-without problems.
-
-Another explanation is that we over-scheduled lecturers in that with our
-current inputs, they give more courses than they normally would in a
-semester. Because of this, the lecturers spend a lot of their time on
-teaching courses, making it harder for them to fit new courses in. 
+The fact that the system was not able to schedule all lectures possibly follows
+from the fact that the lecturers teach more courses with more lectures than
+they normally would in a semester. This results in the teachers being far more
+occupied than they normally would which constrains the options that there are
+for scheduling the courses.
 
 To create the schedule we randomly pick rooms from the timetable and let agents
 argue about who gets to lecture at that time slot. The random nature has several
@@ -101,6 +95,12 @@ different scientific teams have. Finding a good schedule that satisfies these
 constraints is a hard problem that has historically been tackled by CSP solvers
 \cite{johnston1994spike}, just like the course scheduling problem. An agent
 based approach like ours could also be used to tackle this scheduling task.
+Tasks in which multiple agents have to work together to accomplish a goal can
+also use the proposed argumentation based approach. Given a list of tasks agents
+can discuss which agent gets to execute which task at what time. In this case
+the different tasks would be analogous to our courses. Especially when tasks
+need to use the same resource at the same time then our approach can help agents
+schedule their task execution.
 
 \subsection{Future research}
 An interesting future direction of research is checking if people prefer
@@ -114,7 +114,7 @@ schedules.
 
 Another interesting area of research would be to see if the new method
 could be used for general resource allocation instead of just for
-scheduling. This could help in multi agent systems where multiple agents
+scheduling. This could help in multi-agent systems where multiple agents
 want to use the same resource, for example a door or a hallway, but where
 it is hard to find a reasonable way to give an utility for the use of the
 resource. In this case, the agents could argue for why they need to use the
