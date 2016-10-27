@@ -2,12 +2,12 @@
 We looked into the state of the art of scheduling software and found that 
 Syllabus Plus, a product developed by Scientia, is used by a large number 
 of colleges and universities around the world, including the University of 
-Groningen \cite{SyllabusPlus}. Syllabus Plus is described as an artificial 
+Groningen~\cite{SyllabusPlus}. Syllabus Plus is described as an artificial 
 intelligence solution, with its implementation resembling a constraint 
-satisfaction problem solver. The program operates by collection available 
+satisfaction problem solver. The program operates by collecting available 
 data, which consists of foundation and student data. The former contains 
 non-dynamic information about teacher staff and locations, while the latter 
-involves dynamic data, such as student enrollments and course requirements. 
+involves dynamic data, such as student enrolments and course requirements. 
 After a refinement phase for all data is performed, the program iterates 
 through constraint reduction cycles, in which the hard constraints, soft 
 constraints, rules and preferences are adjusted to some degree, until the 
@@ -15,7 +15,7 @@ stop criteria of the program are reached. The result is a working schedule
 that satisfies the target constraints.
 
 The state of the art for using argumentation in the scheduling process is 
-described in a paper by \cite{Kuo:jc}. Here, a course-scheduling 
+described in a paper by~\cite{Kuo:jc}. Here, a course-scheduling 
 negotiating system is presented in which agents, who are representing 
 teachers, are involved in the scheduling process. This involvement consists 
 of negotiating and arguing with other agents, in order to reach a consensus 
@@ -29,28 +29,38 @@ Next, during the negotiation process, every agent selects its most
 effective proposal out of the total list, by calculating an utility value 
 for all proposals and selecting the best scoring option. The utility value 
 is based on particular preferences for issues belonging to a given 
-proposal. Every agent will then present their favorite proposal and will 
+proposal. Every agent will then present their favourite proposal and will 
 try to negotiate with other agents in order to reach a consensus about a 
 single proposal. If such a consensus is indeed reached, the scheduling 
 process is completed for the rooms, courses and agents involved in the 
-proposal. If however no consensus is reached, the agent with the lowest so-
-called risk value is selected to concede. This risk value is evaluated for 
-every agent by taking the utility value of the proposal chosen by agent 
-minus the maximal cost of conceding ones own proposal in favor of that of 
+proposal. If however no consensus is reached, the agent with the lowest 
+so-called risk value is selected to concede. This risk value is evaluated for 
+every agent by taking the utility value of the proposal chosen by the agent 
+minus the maximal cost of conceding ones own proposal in favour of that of 
 another. If there are no more proposals to be selected that have not been 
 used during the negotiation process this round, the argumentation process 
 is started. Else, the conceding agent is prompted to select an available 
 proposal and resume the negotiation process. 
 
 In the argumentation process, the conceding agent chooses the agent with 
-the lowest risk value (itself excluded) to pass to and fro arguments with. 
-The two agents will then look for conflicting issues between them. If such 
-issues exist, both agents will create arguments based on their beliefs and 
-will try to persuade each other through their arguments and 
-counterarguments. The agent that at some point fails to defend himself is 
-prompted to evolve its belief on a particular issue, after which a new 
-negotiation process is started again. The conceding agent will try to look 
-for other agents if no conflicting issues are found, until no more agents 
-are available to argue with. In that case, a new negotiation process is 
-started. The entire scheduling process will continue until a consensus is 
-reached during a negotiation phase.
+the lowest risk value (itself excluded) to argue with. The two agents will
+then look for conflicting issues between them. If such issues exist, both
+agents will create arguments based on their beliefs and will try to
+persuade each other through their arguments and counterarguments. The agent
+that at some point fails to defend himself is prompted to evolve its belief
+on a particular issue, after which a new negotiation process is started
+again. The conceding agent will try to look for other agents if no
+conflicting issues are found, until no more agents are available to argue
+with. In that case, a new negotiation process is started. The entire
+scheduling process will continue until a consensus is reached during a
+negotiation phase.
+
+The issue with this approach is that this will not lead to a perfect
+schedule, since the agents do not have perfect information, without having
+the added benefit of the explanatory power that an argumentative approach
+could have. And if the agents would have perfect information, then it
+basically boils down to solving a constraint satisfaction problem, which
+leaves us back at the older solution to scheduling. We hope to give an
+approach that will give us this explanation, that leads to a clear conflict
+free schedule and does not require prefect information for all the separate
+agents.
