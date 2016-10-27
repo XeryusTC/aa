@@ -23,29 +23,34 @@ about a particular room allocation or to change an agent's belief. Apart
 from beliefs, agents also posses individual preferences, to which a number 
 of proposals are generated for every agent during the proposal generator 
 phase of the algorithm. Proposals are abstract, but can for example take 
-the form of agent \textit{A} claiming room \textit{1} for course 
-\textit{alpha} on time slot \textit{X}. Next, during the negotiation phase, 
-every agent selects its most effective proposal out of the total list, by 
-calculating an utility value for all proposals and selecting the best 
-scoring option. The utility value is based on particular preferences for 
-issues belonging to a given proposal. Every agent will then present their 
-favorite proposal and will try to negotiate with other agents in order to 
-reach a consensus about a single proposal. If such a consensus is indeed 
-reached, the scheduling process is completed for the rooms, courses and 
-agents involved in the proposal. If however no consensus is reached, the 
-agent with the lowest so-called risk value is selected to concede. This 
-risk value is evaluated for every agent by taking the utility value of the 
-proposal chosen by agent minus the maximal cost of conceding ones own 
-proposal in favor of that of another. If there are no more proposals to be 
-selected that have not been used during the negotiation phase this round, 
-the argumentation phase is started. Else, the conceding agent is prompted 
-to select an available proposal and resume the negotiation phase. In the 
-argumentation phase, the conceding agent chooses the agent with the lowest 
-risk value (itself excluded) to pass to and fro arguments with. 
+the form of agent A claiming room 1 for course X on time slot I. 
 
- Based on their beliefs and differences their on, 
-the agents will created arguments trying to change each other\'s beliefs. 
-Based on the outcome of this, particular beliefs for the respective agents 
-will be updated in the belief evaluation phase. Afterwards, algorithm will 
-go back into the negotiation phase. The entire process will continue until 
-consensus is reached during a negotiation phase.
+Next, during the negotiation process, every agent selects its most 
+effective proposal out of the total list, by calculating an utility value 
+for all proposals and selecting the best scoring option. The utility value 
+is based on particular preferences for issues belonging to a given 
+proposal. Every agent will then present their favorite proposal and will 
+try to negotiate with other agents in order to reach a consensus about a 
+single proposal. If such a consensus is indeed reached, the scheduling 
+process is completed for the rooms, courses and agents involved in the 
+proposal. If however no consensus is reached, the agent with the lowest so-
+called risk value is selected to concede. This risk value is evaluated for 
+every agent by taking the utility value of the proposal chosen by agent 
+minus the maximal cost of conceding ones own proposal in favor of that of 
+another. If there are no more proposals to be selected that have not been 
+used during the negotiation process this round, the argumentation process 
+is started. Else, the conceding agent is prompted to select an available 
+proposal and resume the negotiation process. 
+
+In the argumentation process, the conceding agent chooses the agent with 
+the lowest risk value (itself excluded) to pass to and fro arguments with. 
+The two agents will then look for conflicting issues between them. If such 
+issues exist, both agents will create arguments based on their beliefs and 
+will try to persuade each other through their arguments and 
+counterarguments. The agent that at some point fails to defend himself is 
+prompted to evolve its belief on a particular issue, after which a new 
+negotiation process is started again. The conceding agent will try to look 
+for other agents if no conflicting issues are found, until no more agents 
+are available to argue with. In that case, a new negotiation process is 
+started. The entire scheduling process will continue until a consensus is 
+reached during a negotiation phase.
